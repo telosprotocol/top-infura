@@ -1,0 +1,14 @@
+top:
+  grpc:
+    ip: 192.168.50.177
+    port: 19082
+
+mq:
+  topic:
+    tableblock: infura_table_block_dev:stream
+
+rocketmq:
+  name-server: infura_dev
+  producer:
+    group: table_block_dev
+    send-message-timeout: 300000
