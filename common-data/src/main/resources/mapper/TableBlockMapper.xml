@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.topnetwork.common.dao.TableBlockDao">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="org.topnetwork.common.entity.TableBlock">
+        <id column="id" property="id" />
+        <result column="height" property="height" />
+        <result column="miner_address" property="minerAddress" />
+        <result column="hash" property="hash" />
+        <result column="pre_hash" property="preHash" />
+        <result column="table_id" property="tableId" />
+        <result column="timestamp" property="timestamp" />
+        <result column="auditor_xip" property="auditorXip" />
+        <result column="timer_height" property="timerHeight" />
+        <result column="validator_address" property="validatorAddress" />
+        <result column="validator_xip" property="validatorXip" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, height, miner_address, hash, pre_hash, table_id, timestamp, auditor_xip, timer_height, validator_address, validator_xip, create_time, update_time
+    </sql>
+
+</mapper>

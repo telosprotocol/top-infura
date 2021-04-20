@@ -1,7 +1,7 @@
 package org.topnetwork.analysis.mq;
 
 import org.topnetwork.analysis.service.TableBlockService;
-import org.topnetwork.grpclib.pojo.stream.ReturnValue;
+import org.topnetwork.grpclib.pojo.stream.TableBlockResp;
 import org.apache.rocketmq.spring.annotation.MessageModel;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
@@ -17,13 +17,13 @@ import org.springframework.stereotype.Component;
 @Component
 @RocketMQMessageListener(topic = "${pull.rocketmq.topic}", consumerGroup = "${rocketmq.consumer.group}",
         selectorExpression = "${pull.rocketmq.tag}",messageModel =  MessageModel.CLUSTERING)
-public class BlockSrteamMsgConsumer implements RocketMQListener<ReturnValue> {
+public class BlockSrteamMsgConsumer implements RocketMQListener<TableBlockResp> {
     protected final Logger LOGGER = LoggerFactory.getLogger(getClass());
     @Autowired
     private TableBlockService tableBlockService;
 
     @Override
-    public void onMessage(ReturnValue message) {
+    public void onMessage(TableBlockResp message) {
             LOGGER.info("receive msg start..." + message);
             try {
                 tableBlockService.queryTxByHash(message);

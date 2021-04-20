@@ -6,7 +6,6 @@ import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +14,7 @@ import org.topnetwork.analysis.dao.TableBlockDao;
 import org.topnetwork.analysis.service.TableBlockService;
 import org.topnetwork.analysis.service.UnitBlockService;
 import org.topnetwork.grpclib.pojo.stream.LightUnitInput;
-import org.topnetwork.grpclib.pojo.stream.ReturnValue;
+import org.topnetwork.grpclib.pojo.stream.TableBlockResp;
 import org.topnetwork.grpclib.pojo.stream.UnitsBlockMap;
 
 import java.util.HashMap;
@@ -44,7 +43,7 @@ public class TableBlockServiceImpl implements TableBlockService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void queryTxByHash(ReturnValue message) {
+    public void queryTxByHash(TableBlockResp message) {
         //如果内部有交易
         if (ObjectUtils.isEmpty(message.getValue().getBody().getTableblock())) {
             return;

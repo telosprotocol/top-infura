@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.topnetwork.common.dao.NodeWorkloadDao">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="org.topnetwork.common.entity.NodeWorkload">
+        <id column="id" property="id" />
+        <result column="address" property="address" />
+        <result column="timestamp" property="timestamp" />
+        <result column="block_height" property="blockHeight" />
+        <result column="block_hash" property="blockHash" />
+        <result column="edge_reward" property="edgeReward" />
+        <result column="archive_reward" property="archiveReward" />
+        <result column="validator_reward" property="validatorReward" />
+        <result column="auditor_reward" property="auditorReward" />
+        <result column="voter_reward" property="voterReward" />
+        <result column="validator_workload" property="validatorWorkload" />
+        <result column="auditor_workload" property="auditorWorkload" />
+        <result column="total_reward" property="totalReward" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, address, timestamp, block_height, block_hash, edge_reward, archive_reward, validator_reward, auditor_reward, voter_reward, validator_workload, auditor_workload, total_reward, create_time, update_time
+    </sql>
+
+</mapper>

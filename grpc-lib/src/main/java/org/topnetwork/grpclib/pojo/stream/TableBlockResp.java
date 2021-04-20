@@ -6,7 +6,7 @@ import java.io.Serializable;
  * @author bejson.com (i@bejson.com)
  * @website http://www.bejson.com/java2pojo/
  */
-public class ReturnValue implements Serializable {
+public class TableBlockResp implements Serializable {
     private Long result;
     private Value value;
 
