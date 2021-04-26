@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.topnetwork.common.dao.BlockScanDao">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="org.topnetwork.common.entity.BlockScan">
+        <id column="id" property="id" />
+        <result column="address" property="address" />
+        <result column="scan_height" property="scanHeight" />
+        <result column="block_type" property="blockType" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, address, scan_height, block_type, create_time, update_time
+    </sql>
+
+    <update id = "plusScanHeight">
+        update top_block_scan set scan_height = scan_height + #{count}
+        where address = #{address}
+    </update>
+
+</mapper>

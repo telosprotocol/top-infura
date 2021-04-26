@@ -1,7 +1,7 @@
 package org.topnetwork.analysis.service;
 
-import org.topnetwork.grpclib.pojo.stream.ReturnValue;
+import org.topnetwork.grpclib.pojo.stream.TableBlockResult;
 
 public interface TableBlockService {
-    void queryTxByHash(ReturnValue message);
+    void queryTxByHash(TableBlockResult message);
 }

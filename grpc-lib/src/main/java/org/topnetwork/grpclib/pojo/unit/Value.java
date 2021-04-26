@@ -13,7 +13,7 @@ public class Value {
     private int disk_redeem_num;
     private String hash;
     private Header header;
-    private int height;
+    private Long height;
     private String owner;
     private String prev_hash;
     private int shard_id;
@@ -70,10 +70,10 @@ public class Value {
          return header;
      }
 
-    public void setHeight(int height) {
+    public void setHeight(Long height) {
          this.height = height;
      }
-     public int getHeight() {
+     public Long getHeight() {
          return height;
      }
 

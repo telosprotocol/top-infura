@@ -4,7 +4,7 @@ package org.topnetwork.grpclib.pojo.unit;
  * @author bejson.com (i@bejson.com)
  * @website http://www.bejson.com/java2pojo/
  */
-public class UnitBlock {
+public class UnitBlockResult {
 
 //    private String result;
     private Value value;

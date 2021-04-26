@@ -5,17 +5,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 import org.topnetwork.analysis.utils.TopUtils;
-import org.topnetwork.analysis.bean.Account;
-import org.topnetwork.analysis.dao.AccountDao;
 import org.topnetwork.analysis.service.AccountService;
 import org.topnetwork.analysis.utils.ZoneRuleUtils;
+import org.topnetwork.common.dao.AccountDao;
+import org.topnetwork.common.entity.Account;
 import org.topnetwork.grpclib.pojo.account.AccountResult;
 import org.topnetwork.grpclib.pojo.account.AccountValue;
 import org.topnetwork.grpclib.xrpc.TopGrpcClient;
 
 import java.math.BigInteger;
 
-@Service("accountService")
 public class AccountServiceImpl implements AccountService {
 
     @Value("${top.grpcip}")
@@ -75,9 +74,6 @@ public class AccountServiceImpl implements AccountService {
             account = new Account();
             //交易数
             account.setTxNum(BigInteger.ONE);
-            account.setCreateTime(accountValue.getCreated_time());
-            //余额  锁定金额   10e6  utop
-            //disk 100k不变 gas
         } else {
             //不为空就更新
             account.setTxNum(account.getTxNum().add(BigInteger.ONE));
@@ -98,7 +94,7 @@ public class AccountServiceImpl implements AccountService {
         account.setLockGas(accountValue.getLock_gas());
         account.setNonce(accountValue.getNonce());
         account.setShard(accountValue.getGroup_id());
-        account.setType(TopUtils.getAccountType(accountValue.getAccount_addr()));
+        account.setType(TopUtils.getAccountType(accountValue.getAccount_addr()).toString());
         account.setUnlockDiskStaked(accountValue.getUnlock_disk_staked());
         account.setUnlockGasStaked(accountValue.getUnlock_gas_staked());
         account.setUnusedVoteAmount(accountValue.getUnused_vote_amount());
