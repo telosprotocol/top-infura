@@ -9,7 +9,7 @@ import java.io.Serializable;
 public class Header implements Serializable {
 
     private String auditor_xip;
-    private int timerblock_height;
+    private Long timerblock_height;
     private String validator;
     private String validator_xip;
     public void setAuditor_xip(String auditor_xip) {
@@ -19,10 +19,10 @@ public class Header implements Serializable {
          return auditor_xip;
      }
 
-    public void setTimerblock_height(int timerblock_height) {
+    public void setTimerblock_height(Long timerblock_height) {
          this.timerblock_height = timerblock_height;
      }
-     public int getTimerblock_height() {
+     public Long getTimerblock_height() {
          return timerblock_height;
      }
 

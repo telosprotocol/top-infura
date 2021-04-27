@@ -10,5 +10,5 @@ public enum NodeType {
      * zecs：根信标委员选举链
      * recs：子信标委员选举链
      */
-    advance, validator, edge, arcs,root_beacon,sub_beacon
+    auditor, validator, edge, arcs,root_beacon,sub_beacon
 }

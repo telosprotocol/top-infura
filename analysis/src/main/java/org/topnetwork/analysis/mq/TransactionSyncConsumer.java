@@ -15,7 +15,7 @@ import org.topnetwork.analysis.service.TransactionService;
  * @author: sawyer
  * @create: 2021-04-09 09:22:32
  **/
-@Component
+//@Component
 @RocketMQMessageListener(topic = "${transaction.rocketmq.topic}", consumerGroup = "transaction225",
         selectorExpression = "${transaction.rocketmq.tag}",messageModel =  MessageModel.CLUSTERING)
 public class TransactionSyncConsumer implements RocketMQListener<String> {

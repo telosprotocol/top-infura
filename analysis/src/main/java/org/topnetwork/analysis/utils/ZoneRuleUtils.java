@@ -1,7 +1,7 @@
 package org.topnetwork.analysis.utils;
 
 import org.springframework.util.ObjectUtils;
-import org.topnetwork.grpclib.enums.ChainZoneType;
+import org.topnetwork.common.enums.ChainZoneType;
 
 public class ZoneRuleUtils {
 

@@ -4,20 +4,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
-import org.topnetwork.analysis.bean.Account;
 import org.topnetwork.analysis.service.AccountService;
 import org.topnetwork.analysis.service.UnitBlockService;
-import org.topnetwork.grpclib.enums.ChainZoneType;
 import org.topnetwork.grpclib.pojo.stream.UnitsBlockMap;
-import org.topnetwork.grpclib.pojo.unit.UnitBlock;
+import org.topnetwork.grpclib.pojo.unit.UnitBlockResult;
 import org.topnetwork.grpclib.xrpc.TopGrpcClient;
 
-import java.util.Date;
 import java.util.HashMap;
 
-@Service("unitBlockService")
 public class UnitBlockServiceImpl implements UnitBlockService {
 
     @Value("${top.node.rediskey.prefix}")
@@ -40,12 +35,12 @@ public class UnitBlockServiceImpl implements UnitBlockService {
         if (units == null) return;
 
         for (String account : units.keySet()) {
-            UnitBlock unitBlock = queryAccountAndHeight(account, units.get(account).getUnit_height());
-            if (!ObjectUtils.isEmpty(unitBlock)) {
+            UnitBlockResult unitBlockResult = queryAccountAndHeight(account, units.get(account).getUnit_height());
+            if (!ObjectUtils.isEmpty(unitBlockResult)) {
                 return;
             }
-            unitBlock = new UnitBlock();
-            UnitBlock blockByAddressAndHeight = TopGrpcClient.getInstance(ip, port).getBlockByAddressAndHeight(account, (long) units.get(account).getUnit_height());
+            unitBlockResult = new UnitBlockResult();
+            UnitBlockResult blockByAddressAndHeight = TopGrpcClient.getInstance(ip, port).getUnitBlock(account, (long) units.get(account).getUnit_height());
 
             if (blockByAddressAndHeight == null) continue;
             if (blockByAddressAndHeight.getValue() == null) continue;
@@ -69,7 +64,7 @@ public class UnitBlockServiceImpl implements UnitBlockService {
 
     }
 
-    private UnitBlock queryAccountAndHeight(String account, Integer height) {
+    private UnitBlockResult queryAccountAndHeight(String account, Long height) {
         return null;
     }
 

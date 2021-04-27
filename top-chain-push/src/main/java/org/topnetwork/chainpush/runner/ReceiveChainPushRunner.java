@@ -7,17 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.util.ObjectUtils;
 import org.topnetwork.chainpush.mq.BlockStreamProducer;
 import org.topnetwork.grpclib.enums.TopMethod;
-import org.topnetwork.grpclib.pojo.stream.LightUnitInput;
-import org.topnetwork.grpclib.pojo.stream.ReturnValue;
-import org.topnetwork.grpclib.pojo.stream.UnitsBlockMap;
+import org.topnetwork.grpclib.pojo.stream.TableBlockResult;
 import org.topnetwork.grpclib.xrpc.TopGrpcClient;
 import org.topnetwork.grpclib.xrpc.xrpc_reply;
 import org.topnetwork.grpclib.xrpc.xrpc_serviceGrpc;
 
-import java.util.HashMap;
 import java.util.Iterator;
 
 public class ReceiveChainPushRunner implements ApplicationRunner {
@@ -42,16 +38,16 @@ public class ReceiveChainPushRunner implements ApplicationRunner {
     public void run_imp() {
         try {
             LOG.info("Stream block start ip:{},port:{}", ip, port);
-            Iterator<xrpc_reply> it = TopGrpcClient.getInstance(ip, port).setRequest(TopMethod.GET_BLOCK_STREAM.getMethodName(), null).invokeStream();
+            Iterator<xrpc_reply> it = TopGrpcClient.getInstance(ip, port).createRequest(TopMethod.GET_BLOCK_STREAM.getMethodName(), null).invokeStream();
             while (it.hasNext()) {
                 xrpc_reply xrpc_reply = it.next();
                 SendResult sendResult=new SendResult();
                 SendResult wsSendResult=new SendResult();
                 try {
                     //解析数据
-                    ReturnValue returnValue = TopGrpcClient.xrpc_reply2Stream(xrpc_reply);
-                    LOG.info("recv data:", returnValue.toString());
-                    sendResult= blockStreamProducer.syncSend(topic, returnValue);
+                    TableBlockResult tableBlockResult = TopGrpcClient.xrpc_reply2Stream(xrpc_reply);
+                    LOG.info("recv data:", tableBlockResult.toString());
+                    sendResult= blockStreamProducer.syncSend(topic, tableBlockResult);
                 } catch (Exception e) {
                     LOG.info("mq异常" + e.getMessage());
                 } finally {

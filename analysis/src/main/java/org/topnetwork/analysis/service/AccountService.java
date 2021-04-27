@@ -1,6 +1,6 @@
 package org.topnetwork.analysis.service;
 
-import org.topnetwork.analysis.bean.Account;
+import org.topnetwork.common.entity.Account;
 import org.topnetwork.grpclib.pojo.account.AccountValue;
 
 public interface AccountService {
