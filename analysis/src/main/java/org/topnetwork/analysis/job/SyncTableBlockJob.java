@@ -18,8 +18,8 @@ public class SyncTableBlockJob {
     @Autowired
     MultiAddressTableBlockScanner tableBlockScanner;
 
-    @XxlJob("SyncNodeIssuanceJob")
-    public ReturnT<String> syncNodeIssuanceJob(String s) throws Exception {
+    @XxlJob("syncTableBlock")
+    public ReturnT<String> syncTableBlock(String s) throws Exception {
         log.info("start SyncNodeIssuanceJob");
         tableBlockScanner.startScan();
         return ReturnT.SUCCESS;

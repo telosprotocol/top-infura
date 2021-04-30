@@ -30,7 +30,7 @@ public class SyncNodeInfoJob{
      * @return
      * @throws Exception
      */
-    @XxlJob("SyncNodeInfoJob")
+    @XxlJob("syncNodeInfoJob")
     public ReturnT<String> syncNodeInfoJob(String s) throws Exception {
         log.info("start SyncNodeInfoJob");
 
@@ -46,7 +46,7 @@ public class SyncNodeInfoJob{
      * @return
      * @throws Exception
      */
-    @XxlJob("SyncNodeIssuanceJob")
+    @XxlJob("syncNodeIssuanceJob")
     public ReturnT<String> syncNodeIssuanceJob(String s) throws Exception {
         log.info("start SyncNodeIssuanceJob");
 
