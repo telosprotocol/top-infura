@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.topnetwork.common.dao.TopAccountDao">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="org.topnetwork.common.entity.TopAccount">
+        <id column="id" property="id" />
+        <result column="type" property="type" />
+        <result column="address" property="address" />
+        <result column="balance" property="balance" />
+        <result column="lock_balance" property="lockBalance" />
+        <result column="tx_num" property="txNum" />
+        <result column="shard" property="shard" />
+        <result column="gas_total" property="gasTotal" />
+        <result column="gas_un_use" property="gasUnUse" />
+        <result column="disk_staked_token" property="diskStakedToken" />
+        <result column="gas_staked_token" property="gasStakedToken" />
+        <result column="timestamp" property="timestamp" />
+        <result column="chain_zone_type" property="chainZoneType" />
+        <result column="cluster_id" property="clusterId" />
+        <result column="zone_id" property="zoneId" />
+        <result column="lock_gas" property="lockGas" />
+        <result column="burned_token" property="burnedToken" />
+        <result column="unlock_gas_staked" property="unlockGasStaked" />
+        <result column="lock_deposit_balance" property="lockDepositBalance" />
+        <result column="unlock_disk_staked" property="unlockDiskStaked" />
+        <result column="latest_unit_height" property="latestUnitHeight" />
+        <result column="latest_tx_hash_xxhash64" property="latestTxHashXxhash64" />
+        <result column="vote_staked_token" property="voteStakedToken" />
+        <result column="nonce" property="nonce" />
+        <result column="unused_vote_amount" property="unusedVoteAmount" />
+        <result column="latest_tx_hash" property="latestTxHash" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, type, address, balance, lock_balance, tx_num, shard, gas_total, gas_un_use, disk_staked_token, gas_staked_token, timestamp, chain_zone_type, cluster_id, zone_id, lock_gas, burned_token, unlock_gas_staked, lock_deposit_balance, unlock_disk_staked, latest_unit_height, latest_tx_hash_xxhash64, vote_staked_token, nonce, unused_vote_amount, latest_tx_hash, create_time, update_time
+    </sql>
+
+</mapper>

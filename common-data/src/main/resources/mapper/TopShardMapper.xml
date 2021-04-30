@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.topnetwork.common.dao.TopShardDao">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="org.topnetwork.common.entity.TopShard">
+        <id column="id" property="id" />
+        <result column="shardId" property="shardId" />
+        <result column="clusterId" property="clusterId" />
+        <result column="zoneId" property="zoneId" />
+        <result column="blockSize" property="blockSize" />
+        <result column="accountSize" property="accountSize" />
+        <result column="transactionSize" property="transactionSize" />
+        <result column="tps" property="tps" />
+        <result column="created_date" property="createdDate" />
+        <result column="modified_date" property="modifiedDate" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        shardId, clusterId, zoneId, blockSize, accountSize, transactionSize, tps, created_date, modified_date, id
+    </sql>
+
+</mapper>

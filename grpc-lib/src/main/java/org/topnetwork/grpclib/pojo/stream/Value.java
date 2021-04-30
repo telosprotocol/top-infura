@@ -12,7 +12,7 @@ public class Value implements Serializable {
     private int cluster_id;
     private String hash;
     private Header header;
-    private int height;
+    private Long height;
     private String owner;
     private String prev_hash;
     private int shard_id;
@@ -47,10 +47,10 @@ public class Value implements Serializable {
          return header;
      }
 
-    public void setHeight(int height) {
+    public void setHeight(Long height) {
          this.height = height;
      }
-     public int getHeight() {
+     public Long getHeight() {
          return height;
      }
 

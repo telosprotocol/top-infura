@@ -9,7 +9,6 @@ public class AccountResult {
 
     private AccountValue value;
 
-
     public void setValue(AccountValue value) {
         this.value = value;
     }

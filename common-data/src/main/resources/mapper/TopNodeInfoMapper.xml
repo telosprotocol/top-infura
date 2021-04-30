@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.topnetwork.common.dao.TopNodeInfoDao">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="org.topnetwork.common.entity.TopNodeInfo">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="type" property="type" />
+        <result column="address" property="address" />
+        <result column="elected" property="elected" />
+        <result column="last_claim_timestamp" property="lastClaimTimestamp" />
+        <result column="last_issue_timestamp" property="lastIssueTimestamp" />
+        <result column="last_elected_time" property="lastElectedTime" />
+        <result column="last_elected_block_height" property="lastElectedBlockHeight" />
+        <result column="unclaim_amount" property="unclaimAmount" />
+        <result column="accumulated_amount" property="accumulatedAmount" />
+        <result column="auditor_credit" property="auditorCredit" />
+        <result column="auditor_stake" property="auditorStake" />
+        <result column="validator_credit" property="validatorCredit" />
+        <result column="validator_stake" property="validatorStake" />
+        <result column="dividen_ratio" property="dividenRatio" />
+        <result column="network_id" property="networkId" />
+        <result column="node_deposit" property="nodeDeposit" />
+        <result column="node_sign_key" property="nodeSignKey" />
+        <result column="vote_amount" property="voteAmount" />
+        <result column="rec_stake" property="recStake" />
+        <result column="zec_stake" property="zecStake" />
+        <result column="version" property="version" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, name, type, address, elected, last_claim_timestamp, last_issue_timestamp, last_elected_time, last_elected_block_height, unclaim_amount, accumulated_amount, auditor_credit, auditor_stake, validator_credit, validator_stake, dividen_ratio, network_id, node_deposit, node_sign_key, vote_amount, rec_stake, zec_stake, version, create_time, update_time
+    </sql>
+
+</mapper>

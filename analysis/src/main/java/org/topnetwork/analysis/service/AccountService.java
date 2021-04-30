@@ -1,6 +1,6 @@
 package org.topnetwork.analysis.service;
 
-import org.topnetwork.analysis.bean.Account;
+import org.topnetwork.common.entity.TopAccount;
 import org.topnetwork.grpclib.pojo.account.AccountValue;
 
 public interface AccountService {
@@ -11,8 +11,8 @@ public interface AccountService {
      * @param address 账户地址
      * @return 账户信息
      */
-    Account queryAddress(String address);
+    TopAccount queryAddress(String address);
 
-    Account getAccOrSync(String address);
+    TopAccount getAccOrSync(String address);
     void syncFormChain(String address);
 }

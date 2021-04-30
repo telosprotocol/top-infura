@@ -1,21 +1,19 @@
 package org.topnetwork.analysis.service.impl;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
-import org.topnetwork.analysis.utils.TopUtils;
-import org.topnetwork.analysis.bean.Account;
-import org.topnetwork.analysis.dao.AccountDao;
 import org.topnetwork.analysis.service.AccountService;
 import org.topnetwork.analysis.utils.ZoneRuleUtils;
+import org.topnetwork.common.dao.TopAccountDao;
+import org.topnetwork.common.entity.TopAccount;
+import org.topnetwork.common.utils.TopUtils;
 import org.topnetwork.grpclib.pojo.account.AccountResult;
 import org.topnetwork.grpclib.pojo.account.AccountValue;
 import org.topnetwork.grpclib.xrpc.TopGrpcClient;
 
 import java.math.BigInteger;
 
-@Service("accountService")
 public class AccountServiceImpl implements AccountService {
 
     @Value("${top.grpcip}")
@@ -24,7 +22,7 @@ public class AccountServiceImpl implements AccountService {
     private int port;
 
     @SuppressWarnings("unused")
-    private AccountDao accountDao;
+    private TopAccountDao topAccountDao;
 
     @Override
     public void syncFormChain(String address) {
@@ -41,27 +39,27 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Account getAccOrSync(String address){
-        Account account = queryAddress(address);
-        if (!ObjectUtils.isEmpty(account)) {
-            return account;
+    public TopAccount getAccOrSync(String address){
+        TopAccount topAccount = queryAddress(address);
+        if (!ObjectUtils.isEmpty(topAccount)) {
+            return topAccount;
         }
-        account = new Account();
+        topAccount = new TopAccount();
         AccountResult account1 = TopGrpcClient.getInstance(ip, port).getAccount(address);
         int times = 10;
         while ((account1 == null || account1.getValue() == null) && times > 0) {
             account1 = TopGrpcClient.getInstance(ip, port).getAccount(address);
         }
-        account.setAddress(address);
-        account.setClusterId(account1.getValue().getCluster_id());
-        account.setNonce(account1.getValue().getNonce());
-        account.setShard(account1.getValue().getGroup_id());
-        account.setZoneId(account1.getValue().getZone_id());
+        topAccount.setAddress(address);
+        topAccount.setClusterId(account1.getValue().getCluster_id());
+        topAccount.setNonce(account1.getValue().getNonce());
+        topAccount.setShard(account1.getValue().getGroup_id());
+        topAccount.setZoneId(account1.getValue().getZone_id());
         try {
             saveAccountAndContract(account1.getValue());
         } catch (Exception e) {
         }
-        return account;
+        return topAccount;
     }
 
     private void saveAccount(AccountValue accountValue) {
@@ -69,44 +67,41 @@ public class AccountServiceImpl implements AccountService {
 //        TopGrpcClient grpcClient = TopGrpcClient.getInstance(ip, port);
 //        AccountResult accountResult = grpcClient.getAccount(address);
         //查询数据库是否有这个address
-        Account account = queryAddress(accountValue.getAccount_addr());
-        if (ObjectUtils.isEmpty(account)) {
+        TopAccount topAccount = queryAddress(accountValue.getAccount_addr());
+        if (ObjectUtils.isEmpty(topAccount)) {
             //如果为空就保存
-            account = new Account();
+            topAccount = new TopAccount();
             //交易数
-            account.setTxNum(BigInteger.ONE);
-            account.setCreateTime(accountValue.getCreated_time());
-            //余额  锁定金额   10e6  utop
-            //disk 100k不变 gas
+            topAccount.setTxNum(BigInteger.ONE);
         } else {
             //不为空就更新
-            account.setTxNum(account.getTxNum().add(BigInteger.ONE));
+            topAccount.setTxNum(topAccount.getTxNum().add(BigInteger.ONE));
         }
-        account.setAddress(accountValue.getAccount_addr());
-        account.setBalance(accountValue.getBalance());
-        account.setBurnedToken(accountValue.getBurned_token());
-        account.setChainZoneType(ZoneRuleUtils.getChainZoneType(accountValue.getAccount_addr()));
-        account.setClusterId(accountValue.getZone_id());
-        account.setDiskStakedToken(accountValue.getDisk_staked_token());
-        account.setGasStakedToken(accountValue.getGas_staked_token());
-        account.setGasTotal(accountValue.getTotal_gas());
-        account.setGasUnUse(accountValue.getAvailable_gas());
-        account.setLockBalance(accountValue.getLock_balance());
-        account.setLatestTxHash(accountValue.getLatest_tx_hash());
-        account.setLatestTxHashXxhash64(accountValue.getLatest_tx_hash_xxhash64());
-        account.setLockDepositBalance(accountValue.getLock_deposit_balance());
-        account.setLockGas(accountValue.getLock_gas());
-        account.setNonce(accountValue.getNonce());
-        account.setShard(accountValue.getGroup_id());
-        account.setType(TopUtils.getAccountType(accountValue.getAccount_addr()));
-        account.setUnlockDiskStaked(accountValue.getUnlock_disk_staked());
-        account.setUnlockGasStaked(accountValue.getUnlock_gas_staked());
-        account.setUnusedVoteAmount(accountValue.getUnused_vote_amount());
-        account.setVoteStakedToken(accountValue.getVote_staked_token());
-        account.setZoneId(accountValue.getZone_id());
+        topAccount.setAddress(accountValue.getAccount_addr());
+        topAccount.setBalance(accountValue.getBalance());
+        topAccount.setBurnedToken(accountValue.getBurned_token());
+        topAccount.setChainZoneType(ZoneRuleUtils.getChainZoneType(accountValue.getAccount_addr()));
+        topAccount.setClusterId(accountValue.getZone_id());
+        topAccount.setDiskStakedToken(accountValue.getDisk_staked_token());
+        topAccount.setGasStakedToken(accountValue.getGas_staked_token());
+        topAccount.setGasTotal(accountValue.getTotal_gas());
+        topAccount.setGasUnUse(accountValue.getAvailable_gas());
+        topAccount.setLockBalance(accountValue.getLock_balance());
+        topAccount.setLatestTxHash(accountValue.getLatest_tx_hash());
+        topAccount.setLatestTxHashXxhash64(accountValue.getLatest_tx_hash_xxhash64());
+        topAccount.setLockDepositBalance(accountValue.getLock_deposit_balance());
+        topAccount.setLockGas(accountValue.getLock_gas());
+        topAccount.setNonce(accountValue.getNonce());
+        topAccount.setShard(accountValue.getGroup_id());
+        topAccount.setType(TopUtils.getAccountType(accountValue.getAccount_addr()).toString());
+        topAccount.setUnlockDiskStaked(accountValue.getUnlock_disk_staked());
+        topAccount.setUnlockGasStaked(accountValue.getUnlock_gas_staked());
+        topAccount.setUnusedVoteAmount(accountValue.getUnused_vote_amount());
+        topAccount.setVoteStakedToken(accountValue.getVote_staked_token());
+        topAccount.setZoneId(accountValue.getZone_id());
     }
 
-    public Account queryAddress(String address) {
+    public TopAccount queryAddress(String address) {
         return null;
     }
 

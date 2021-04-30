@@ -1,31 +1,23 @@
 package org.topnetwork.analysis.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import org.apache.rocketmq.client.producer.SendCallback;
-import org.apache.rocketmq.client.producer.SendResult;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.dao.DuplicateKeyException;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
-import org.topnetwork.analysis.bean.Transaction;
-import org.topnetwork.analysis.dao.TransactionDao;
 import org.topnetwork.analysis.service.AccountService;
 import org.topnetwork.analysis.service.TransactionService;
+import org.topnetwork.common.dao.TopTransactionDao;
 import org.topnetwork.grpclib.pojo.account.AccountValue;
 import org.topnetwork.grpclib.pojo.transaction.*;
 import org.topnetwork.grpclib.xrpc.TopGrpcClient;
+import org.topnetwork.grpclib.xrpc.xrpc_request;
 
-import java.math.BigInteger;
 import java.util.HashMap;
 
-@Service("transactionService")
 public class TransactionServiceImpl implements TransactionService {
 
     @Value("${top.grpcip}")
@@ -40,7 +32,7 @@ public class TransactionServiceImpl implements TransactionService {
     private String target;
 
     @SuppressWarnings("unused")
-    private TransactionDao transactionDao;
+    private TopTransactionDao topTransactionDao;
 
     @Autowired
     private AccountService accountService;
@@ -58,7 +50,11 @@ public class TransactionServiceImpl implements TransactionService {
         HashMap<String, Object> map = new HashMap<>();
         map.put("tx_hash", txHash);
         System.out.println("========tx_hash:" + txHash);
-        String tx = instance.setRequest("getTransaction", map).invoke2string();
+
+        xrpc_request request = instance.createRequest("getTransaction", map);
+        String tx = instance.callRequest(request);
+
+
         TransactionResult transactionResult = null;
         transactionResult = JSON.parseObject(tx,TransactionResult.class);
         if (ObjectUtils.isEmpty(transactionResult)

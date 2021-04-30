@@ -15,14 +15,17 @@
     <name>api-service</name>
     <description>TOP api service</description>
     <properties>
-        <java.version>11</java.version>
+        <java.version>1.8</java.version>
         <grpc.version>1.34.0</grpc.version>
         <apiservice.version>0.0.1-SNAPSHOT</apiservice.version>
+        <common.data.version>0.0.1-SNAPSHOT</common.data.version>
     </properties>
     <modules>
         <module>top-chain-push</module>
         <module>analysis</module>
         <module>grpc-lib</module>
+        <module>common-data</module>
+        <module>top-api</module>
     </modules>
     <dependencyManagement>
         <dependencies>
@@ -43,6 +46,8 @@
                 <artifactId>grpc-stub</artifactId>
                 <version>${grpc.version}</version>
             </dependency>
+
+
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>fastjson</artifactId>
@@ -54,6 +59,12 @@
                 <artifactId>grpc-lib</artifactId>
                 <version>${apiservice.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.topnetwork</groupId>
+                <artifactId>common-data</artifactId>
+                <version>${common.data.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 

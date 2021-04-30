@@ -9,9 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.topnetwork.analysis.service.AccountService;
 
-@Component
-@RocketMQMessageListener(topic = "${account.rocketmq.topic}", consumerGroup = "account225",
-        selectorExpression = "${account.rocketmq.tag}",messageModel =  MessageModel.CLUSTERING)
+//@Component
+//@RocketMQMessageListener(topic = "${account.rocketmq.topic}", consumerGroup = "account225",
+//        selectorExpression = "${account.rocketmq.tag}",messageModel =  MessageModel.CLUSTERING)
 public class AccountSyncConsumer implements RocketMQListener<String> {
 
     protected final Logger LOGGER = LoggerFactory.getLogger(getClass());
