@@ -3,11 +3,8 @@ package org.topnetwork.analysis.block;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
-import org.topnetwork.common.service.BlockScanService;
-import org.topnetwork.grpclib.xrpc.TopGrpcClient;
+import org.topnetwork.common.service.TopBlockScanService;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -19,7 +16,7 @@ import java.util.concurrent.*;
  **/
 @Slf4j
 @Component
-public class MultiAddressTableBlockScanner implements InitializingBean, ApplicationRunner {
+public class MultiAddressTableBlockScanner implements InitializingBean {
 
     private final static String TABLEBLOCK_ACCOUNT_BASE = "Ta0000gRD2qVpp2S7UpjAsznRiRhbE1qNnhMbEDp@";
 
@@ -35,7 +32,7 @@ public class MultiAddressTableBlockScanner implements InitializingBean, Applicat
     TableBlockLoader tableBlockLoader;
 
     @Autowired
-    BlockScanService blockScanService;
+    TopBlockScanService topBlockScanService;
 
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -43,10 +40,6 @@ public class MultiAddressTableBlockScanner implements InitializingBean, Applicat
         initAddress();
     }
 
-    @Override
-    public void run(ApplicationArguments args) throws Exception {
-        startScan();
-    }
 
     private void initExecutor() {
         blockingQueue = new ArrayBlockingQueue<Runnable>(256);
@@ -61,26 +54,22 @@ public class MultiAddressTableBlockScanner implements InitializingBean, Applicat
     }
 
     public void startScan() {
-        if(running){
-            throw new RuntimeException("scanner is running");
-        }
+        ExecutorCompletionService completionService = new ExecutorCompletionService(executor);
 
-        running = true;
-
+        int totalTask = addressList.size();
         for (String address : addressList) {
-            executor.submit(new ScanBlockTask(address));
-        }
-    }
-
-    public void stopScan() {
-        if(!running){
-            return;
+            completionService.submit(new ScanBlockTask(address), null);
         }
 
-    }
-
-    public boolean isRunning() {
-        return running;
+        int completCount = 0;
+        while(completCount < totalTask) {
+            try {
+                Future completFuture = completionService.take();
+                completCount++;
+            } catch (InterruptedException e) {
+                log.error("take scan future error", e);
+            }
+        }
     }
 
     /**
@@ -93,14 +82,12 @@ public class MultiAddressTableBlockScanner implements InitializingBean, Applicat
     }
 
     public Long addressCurrentHeight(String address) {
-        return blockScanService.getScanHeight(address);
+        return topBlockScanService.getScanHeight(address);
     }
 
     public void plusScanHeight(String address, Long count) {
-        blockScanService.plusScanHeight(address, count);
+        topBlockScanService.plusScanHeight(address, count);
     }
-
-
 
 
     private class ScanBlockTask implements Runnable {
@@ -108,7 +95,7 @@ public class MultiAddressTableBlockScanner implements InitializingBean, Applicat
         /**
          * 每次执行的最大扫描高度，执行结束后将重新排队执行
          */
-        private int scanCountPerOnce = 10;
+        private int scanCountPerOnce = 100;
 
         /**
          * 扫描完成
@@ -137,16 +124,8 @@ public class MultiAddressTableBlockScanner implements InitializingBean, Applicat
             }
             log.info("scan block finish", address);
 
-
             plusScanHeight(address, scanCount);
 
-            if (running && !scanFinish) {
-                executor.submit(this);
-            }
-        }
-
-        private boolean canContinue() {
-            return true;
         }
     }
 }

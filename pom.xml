@@ -25,6 +25,7 @@
         <module>analysis</module>
         <module>grpc-lib</module>
         <module>common-data</module>
+        <module>top-api</module>
     </modules>
     <dependencyManagement>
         <dependencies>

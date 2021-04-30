@@ -33,7 +33,7 @@ public class TableBlockSubscriber implements ApplicationRunner {
         Thread thread = new Thread(){
             @Override
             public void run() {
-//                subscribe();
+                subscribe();
             }
         };
 

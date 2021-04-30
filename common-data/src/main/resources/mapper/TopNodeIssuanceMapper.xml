@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.topnetwork.common.dao.TopNodeIssuanceDao">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="org.topnetwork.common.entity.TopNodeIssuance">
+        <id column="id" property="id" />
+        <result column="address" property="address" />
+        <result column="height" property="height" />
+        <result column="timestamp" property="timestamp" />
+        <result column="archive_reward_ratio" property="archiveRewardRatio" />
+        <result column="auditor_reward_ratio" property="auditorRewardRatio" />
+        <result column="edge_reward_ratio" property="edgeRewardRatio" />
+        <result column="governance_reward_ratio" property="governanceRewardRatio" />
+        <result column="validator_reward_ratio" property="validatorRewardRatio" />
+        <result column="vote_reward_ratio" property="voteRewardRatio" />
+        <result column="auditor_workload" property="auditorWorkload" />
+        <result column="validator_workload" property="validatorWorkload" />
+        <result column="edge_reward" property="edgeReward" />
+        <result column="archive_reward" property="archiveReward" />
+        <result column="validator_reward" property="validatorReward" />
+        <result column="auditor_reward" property="auditorReward" />
+        <result column="voter_reward" property="voterReward" />
+        <result column="total_reward" property="totalReward" />
+        <result column="timer_height" property="timerHeight" />
+        <result column="zec_reward_contract_height" property="zecRewardContractHeight" />
+        <result column="zec_vote_contract_height" property="zecVoteContractHeight" />
+        <result column="zec_workload_contract_height" property="zecWorkloadContractHeight" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, address, height, timestamp, archive_reward_ratio, auditor_reward_ratio, edge_reward_ratio, governance_reward_ratio, validator_reward_ratio, vote_reward_ratio, auditor_workload, validator_workload, edge_reward, archive_reward, validator_reward, auditor_reward, voter_reward, total_reward, timer_height, zec_reward_contract_height, zec_vote_contract_height, zec_workload_contract_height, create_time, update_time
+    </sql>
+
+<!--    <select id="maxHeight" resultType="java.lang.Long">-->
+<!--        select max(height) from top_node_issuance;-->
+<!--    </select>-->
+
+</mapper>

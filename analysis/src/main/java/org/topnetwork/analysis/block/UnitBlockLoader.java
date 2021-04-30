@@ -11,10 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.topnetwork.analysis.mq.BlockMessageProducer;
-import org.topnetwork.common.entity.UnitBlock;
+import org.topnetwork.common.entity.TopUnitBlock;
 import org.topnetwork.common.enums.UnitBlockType;
-import org.topnetwork.common.service.AccountService;
-import org.topnetwork.common.service.UnitBlockService;
+import org.topnetwork.common.service.TopAccountService;
+import org.topnetwork.common.service.TopUnitBlockService;
 import org.topnetwork.grpclib.pojo.unit.*;
 import org.topnetwork.grpclib.xrpc.TopGrpcClient;
 
@@ -32,10 +32,10 @@ public class UnitBlockLoader implements RocketMQListener<UnitBlockLoader.UnitBlo
     TopGrpcClient grpcClient;
 
     @Autowired
-    AccountService accountService;
+    TopAccountService topAccountService;
 
     @Autowired
-    UnitBlockService unitBlockService;
+    TopUnitBlockService unitBlockService;
 
     @Autowired
     BlockMessageProducer blockMessageProducer;
@@ -50,17 +50,16 @@ public class UnitBlockLoader implements RocketMQListener<UnitBlockLoader.UnitBlo
     /**
      * 异步保存unitblock
      *
-     * @param addr
+     * @param address
      * @param height
      */
-    public void asyncSaveNewUnitBlock(String addr, Long height) {
-        rocketMQTemplate.syncSend(asyncTopic, new UnitBlockParam(addr, height));
-//        saveNewUnitBlock(addr, height);
+    public void asyncSaveNewUnitBlock(String tableBlockHash,String address, Long height) {
+        rocketMQTemplate.syncSend(asyncTopic, new UnitBlockParam(tableBlockHash,address, height));
     }
 
     @Override
     public void onMessage(UnitBlockParam unitBlockParam) {
-        saveNewUnitBlock(unitBlockParam.getAddr(), unitBlockParam.getHeight());
+        saveNewUnitBlock(unitBlockParam.getTableBlockHash(), unitBlockParam.getAddress(), unitBlockParam.getHeight());
     }
 
     /**
@@ -69,42 +68,42 @@ public class UnitBlockLoader implements RocketMQListener<UnitBlockLoader.UnitBlo
      * @param height
      */
     @Transactional
-    public void saveNewUnitBlock(String addr, Long height) {
+    public void saveNewUnitBlock(String tableBlockHash, String addr, Long height) {
 
         UnitBlockResult unitBlockResult = grpcClient.getUnitBlock(addr, height);
 
-        saveToDB(unitBlockResult);
+        saveToDB(tableBlockHash, unitBlockResult);
     }
 
-    private void saveToDB(UnitBlockResult unitBlockResult) {
-        Value value = unitBlockResult.getValue();
+    private void saveToDB(String tableBlockHash, UnitBlockResult unitBlockResult) {
+        UnitBlockValue unitBlockValue = unitBlockResult.getValue();
 
-        UnitBlockType unitBlockType = value.getBody().getFullunit() == null ? UnitBlockType.LightUnit : UnitBlockType.FullUnit;
+        UnitBlockType unitBlockType = unitBlockValue.getBody().getFullunit() == null ? UnitBlockType.LightUnit : UnitBlockType.FullUnit;
 
         //交易數量
-        Lightunit lightunit = value.getBody().getLightunit();
+        Lightunit lightunit = unitBlockValue.getBody().getLightunit();
 
         int txCount = lightunit != null ? lightunit.getLightunit_input().getTxs().size() : 0;
 
-        UnitBlock unitBlock = new UnitBlock();
-        unitBlock.setAuditor(value.getHeader().getAuditor());
-        unitBlock.setValidator(value.getHeader().getValidator());
-        unitBlock.setPreHash(value.getPrev_hash());
-        unitBlock.setHash(value.getHash());
-        unitBlock.setHeight(value.getHeight());
-        unitBlock.setZoneId(value.getZone_id());
-        unitBlock.setShardId(value.getShard_id());
-        unitBlock.setTableId(value.getTable_id());
-        unitBlock.setClusterId(value.getCluster_id());
-        unitBlock.setOwner(value.getOwner());
-        unitBlock.setTimestamp(value.getTimestamp());
-        unitBlock.setClusterId(value.getCluster_id());
-        unitBlock.setTxCount(txCount);
-        unitBlock.setBlockType(unitBlockType);
+        TopUnitBlock topUnitBlock = new TopUnitBlock();
+        topUnitBlock.setAuditor(unitBlockValue.getHeader().getAuditor());
+        topUnitBlock.setValidator(unitBlockValue.getHeader().getValidator());
+        topUnitBlock.setPreHash(unitBlockValue.getPrev_hash());
+        topUnitBlock.setHash(unitBlockValue.getHash());
+        topUnitBlock.setHeight(unitBlockValue.getHeight());
+        topUnitBlock.setZoneId(unitBlockValue.getZone_id());
+        topUnitBlock.setShardId(unitBlockValue.getShard_id());
+        topUnitBlock.setTableId(unitBlockValue.getTable_id());
+        topUnitBlock.setClusterId(unitBlockValue.getCluster_id());
+        topUnitBlock.setOwner(unitBlockValue.getOwner());
+        topUnitBlock.setTimestamp(unitBlockValue.getTimestamp());
+        topUnitBlock.setClusterId(unitBlockValue.getCluster_id());
+        topUnitBlock.setTxCount(txCount);
+        topUnitBlock.setBlockType(unitBlockType);
+        topUnitBlock.setTableblockHash(tableBlockHash);
+        unitBlockService.save(topUnitBlock);
 
-        unitBlockService.save(unitBlock);
-
-        blockMessageProducer.sendNewUnitBlockMessage(unitBlock.getHash(), unitBlock.getOwner(), unitBlock.getHeight());
+        blockMessageProducer.sendNewUnitBlockMessage(topUnitBlock.getHash(), topUnitBlock.getOwner(), topUnitBlock.getHeight());
     }
 
 
@@ -112,7 +111,8 @@ public class UnitBlockLoader implements RocketMQListener<UnitBlockLoader.UnitBlo
     @AllArgsConstructor
     @NoArgsConstructor
     public static class UnitBlockParam {
-        private String addr;
+        private String tableBlockHash;
+        private String address;
         private Long height;
 
     }

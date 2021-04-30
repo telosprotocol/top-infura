@@ -8,13 +8,8 @@ import com.alibaba.fastjson.JSON;
 import org.springframework.util.ObjectUtils;
 
 import org.topnetwork.grpclib.pojo.account.AccountResult;
-import org.topnetwork.grpclib.pojo.election.ElectionGrpcResult;
-import org.topnetwork.grpclib.pojo.node.ConsensusClusterValue;
-import org.topnetwork.grpclib.pojo.node.ConsensusResult;
-import org.topnetwork.grpclib.pojo.node.NodeResult;
-import org.topnetwork.grpclib.pojo.node.OnlineListResult;
-import org.topnetwork.grpclib.pojo.node.QueryNodeRewardResult;
-import org.topnetwork.grpclib.pojo.node.StandbysResult;
+import org.topnetwork.grpclib.pojo.election.ElectionBlockResult;
+import org.topnetwork.grpclib.pojo.node.*;
 import org.topnetwork.grpclib.pojo.shard.GeneralInfos;
 import org.topnetwork.grpclib.pojo.stream.TableBlockResult;
 import org.topnetwork.grpclib.pojo.timer.TimerValue;
@@ -100,14 +95,6 @@ public class TopGrpcClient {
         }
     }
 
-    public static TableBlockResult xrpc_reply2Stream(xrpc_reply xrpc_reply) throws Exception {
-        if (xrpc_reply == null || xrpc_reply.getBody() == null) {
-            return null;
-        }
-        TableBlockResult tableBlockResult = JSON.parseObject(xrpc_reply.getBody(), TableBlockResult.class);
-        return tableBlockResult;
-    }
-
 
     private <T> T getBlock(String address, Long height, Class<T> clazz){
         T blockResp = null;
@@ -122,7 +109,7 @@ public class TopGrpcClient {
         return blockResp;
     }
 
-    private <T> T getLastBlock(String address, Class<T> clazz){
+    private <T> T getLatestBlock(String address, Class<T> clazz){
         T blockResp = null;
         HashMap<String, Object> map = new HashMap<>();
         map.put("account_addr", address);
@@ -138,8 +125,8 @@ public class TopGrpcClient {
      * @param address
      * @return
      */
-    public TableBlockResult getLastTableBlock(String address){
-        return getLastBlock(address, TableBlockResult.class);
+    public TableBlockResult getLatestTableBlock(String address){
+        return getLatestBlock(address, TableBlockResult.class);
     }
 
     /**
@@ -152,36 +139,31 @@ public class TopGrpcClient {
         return getBlock(address, height, TableBlockResult.class);
     }
 
-
-    public UnitBlockResult getLastUnitBlock(String address){
-        return getLastBlock(address, UnitBlockResult.class);
+    public UnitBlockResult getLatestUnitBlock(String address){
+        return getLatestBlock(address, UnitBlockResult.class);
     }
 
     public UnitBlockResult getUnitBlock(String address, Long height) {
         return getBlock(address, height, UnitBlockResult.class);
     }
 
-    public ElectionGrpcResult getBlockElection(String address,Long height){
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("account_addr", address);
-        map.put("type", "height");
-        map.put("height", height);
-
-
-        xrpc_request request = this.createRequest("getBlock",map);
-        String getBlock = callRequest(request);
-        ElectionGrpcResult electionGrpcResult = JSON.parseObject(getBlock, ElectionGrpcResult.class);
-        return electionGrpcResult;
+    /**
+     * 查询ElectionBlock(选举节点的区块)
+     * @param address
+     * @param height
+     * @return
+     */
+    public ElectionBlockResult getElectionBlock(String address, Long height){
+        return getBlock(address, height, ElectionBlockResult.class);
     }
 
-    public ElectionGrpcResult getBlockElection(String address){
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("account_addr", address);
-        map.put("type", "last");
-        xrpc_request request = this.createRequest("getBlock",map);
-        String getBlock = callRequest(request);
-        ElectionGrpcResult electionGrpcResult = JSON.parseObject(getBlock, ElectionGrpcResult.class);
-        return electionGrpcResult;
+    /**
+     * 查询ElectionBlock(选举节点的区块)
+     * @param address
+     * @return
+     */
+    public ElectionBlockResult getLatestElectionBlock(String address){
+        return getLatestBlock(address, ElectionBlockResult.class);
     }
 
     static class TimerQueryRunner implements  Runnable {
@@ -389,14 +371,14 @@ public class TopGrpcClient {
         return tv;
     }
     
-    public QueryNodeRewardResult queryNodeReward() {
+    public NodeRewardResult queryNodeReward() {
         HashMap<String, Object> map = new HashMap<>();
 
         xrpc_request request = this.createRequest("queryNodeReward",map);
         String account = callRequest(request);
 
-        QueryNodeRewardResult queryNodeRewardResult = JSON.parseObject(account, QueryNodeRewardResult.class);
-        return queryNodeRewardResult;
+        NodeRewardResult nodeRewardResult = JSON.parseObject(account, NodeRewardResult.class);
+        return nodeRewardResult;
     }
     
     public GeneralInfos getGeneralInfos() {
@@ -407,6 +389,16 @@ public class TopGrpcClient {
         GeneralInfos queryNodeRewardResult = JSON.parseObject(infos, GeneralInfos.class);
         return queryNodeRewardResult;
     }
-    
-    
+
+    public IssuanceDetailResult getIssuanceDetail(Long height) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("height", height);
+        xrpc_request request = this.createRequest("getIssuanceDetail", map);
+        String resp = callRequest(request);
+        IssuanceDetailResult result = JSON.parseObject(resp, IssuanceDetailResult.class);
+        return result;
+    }
+
+
+
 }

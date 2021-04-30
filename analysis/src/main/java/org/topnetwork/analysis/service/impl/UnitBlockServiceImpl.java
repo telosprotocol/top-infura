@@ -9,6 +9,7 @@ import org.topnetwork.analysis.service.AccountService;
 import org.topnetwork.analysis.service.UnitBlockService;
 import org.topnetwork.grpclib.pojo.stream.UnitsBlockMap;
 import org.topnetwork.grpclib.pojo.unit.UnitBlockResult;
+import org.topnetwork.grpclib.pojo.unit.UnitBlockValue;
 import org.topnetwork.grpclib.xrpc.TopGrpcClient;
 
 import java.util.HashMap;
@@ -44,7 +45,7 @@ public class UnitBlockServiceImpl implements UnitBlockService {
 
             if (blockByAddressAndHeight == null) continue;
             if (blockByAddressAndHeight.getValue() == null) continue;
-            org.topnetwork.grpclib.pojo.unit.Value value = blockByAddressAndHeight.getValue();
+            UnitBlockValue unitBlockValue = blockByAddressAndHeight.getValue();
 //            unitBlock.setAccount(value.getOwner());
 //
 //            Account account1 = accountService.getAccOrSync(value.getOwner());

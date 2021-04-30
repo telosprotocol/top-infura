@@ -12,9 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 import org.topnetwork.analysis.mq.BlockMessageProducer;
 import org.topnetwork.analysis.utils.ZoneRuleUtils;
-import org.topnetwork.common.entity.Transaction;
+import org.topnetwork.common.entity.TopTransaction;
 import org.topnetwork.common.enums.TxType;
-import org.topnetwork.common.service.TransactionService;
+import org.topnetwork.common.service.TopTransactionService;
 import org.topnetwork.grpclib.pojo.account.AccountResult;
 import org.topnetwork.grpclib.pojo.transaction.*;
 import org.topnetwork.grpclib.xrpc.TopGrpcClient;
@@ -36,7 +36,7 @@ public class TransactionLoader implements RocketMQListener<String> {
     TopGrpcClient topGrpcClient;
 
     @Autowired
-    TransactionService transactionService;
+    TopTransactionService topTransactionService;
 
     @Autowired
     AccountLoader accountLoader;
@@ -90,68 +90,68 @@ public class TransactionLoader implements RocketMQListener<String> {
         String from = tx_action.getSender_action().getTx_sender_account_addr();
         String to = tx_action.getReceiver_action().getTx_receiver_account_addr();
 
-        Transaction transaction = transactionService.getTxByHash(txHash);
+        TopTransaction topTransaction = topTransactionService.getTxByHash(txHash);
 
-        if(transaction == null){
-            transaction = new Transaction();
+        if(topTransaction == null){
+            topTransaction = new TopTransaction();
         }
 
         Tx_consensus_state state = transactionResult.getValue().getTx_consensus_state();
 
 
-        transaction.setHash(txHash);
-        transaction.setFrom(from);
-        transaction.setTo(to);
-        transaction.setType(TxType.parse(txInfo.getTx_type()));
-        transaction.setNote(txInfo.getNote());
-        transaction.setLastTxNonce(txInfo.getLast_tx_nonce());
-        transaction.setTxLen(txInfo.getTx_len());
+        topTransaction.setHash(txHash);
+        topTransaction.setFrom(from);
+        topTransaction.setTo(to);
+        topTransaction.setType(TxType.parse(txInfo.getTx_type()));
+        topTransaction.setNote(txInfo.getNote());
+        topTransaction.setLastTxNonce(txInfo.getLast_tx_nonce());
+        topTransaction.setTxLen(txInfo.getTx_len());
 
         //sender字段
         Action_param senderParam = tx_action.getSender_action().getAction_param();
         Action_param receiverParam = tx_action.getReceiver_action().getAction_param();
-        transaction.setSenderActionParam(JSON.toJSONString(senderParam));
-        transaction.setReceiverActionParam(JSON.toJSONString(receiverParam));
+        topTransaction.setSenderActionParam(JSON.toJSONString(senderParam));
+        topTransaction.setReceiverActionParam(JSON.toJSONString(receiverParam));
         if (ObjectUtils.isEmpty(senderParam)) {
-            transaction.setAmount(BigInteger.ZERO);
+            topTransaction.setAmount(BigInteger.ZERO);
         } else {
-            transaction.setAmount(new BigInteger(senderParam.getAmount()));
-            transaction.setTokenName(senderParam.getToken_name());
-            transaction.setAccountKey(senderParam.getAccount_key());
-            transaction.setKeyValue(senderParam.getKey_value());
-            transaction.setTgasLimit(senderParam.getTgas_limit());
+            topTransaction.setAmount(new BigInteger(senderParam.getAmount()));
+            topTransaction.setTokenName(senderParam.getToken_name());
+            topTransaction.setAccountKey(senderParam.getAccount_key());
+            topTransaction.setKeyValue(senderParam.getKey_value());
+            topTransaction.setTgasLimit(senderParam.getTgas_limit());
         }
         //receiver字段
         if (!ObjectUtils.isEmpty(receiverParam)) {
-            transaction.setFuncName(receiverParam.getFunc_name());
-            transaction.setFuncInput(receiverParam.getParas());
-            transaction.setTgasLimit(receiverParam.getTgas_limit());
-            transaction.setCode(receiverParam.getCode());
-            transaction.setVoteNum(receiverParam.getVote_num());
-            transaction.setLockDuration(receiverParam.getLock_duration());
-            transaction.setAccountKey(receiverParam.getAccount_key());
-            transaction.setKeyValue(receiverParam.getKey_value());
-            transaction.setVersion(receiverParam.getVersion());
-            transaction.setUnlockType(receiverParam.getUnlock_type());
-            transaction.setUnlockValues(receiverParam.getUnlock_values());
-            transaction.setParams(receiverParam.getParams());
-            transaction.setLockTranHash(receiverParam.getLock_tran_hash());
-            transaction.setSignatures(receiverParam.getSignatures());
-            transaction.setName(receiverParam.getName());
+            topTransaction.setFuncName(receiverParam.getFunc_name());
+            topTransaction.setFuncInput(receiverParam.getParas());
+            topTransaction.setTgasLimit(receiverParam.getTgas_limit());
+            topTransaction.setCode(receiverParam.getCode());
+            topTransaction.setVoteNum(receiverParam.getVote_num());
+            topTransaction.setLockDuration(receiverParam.getLock_duration());
+            topTransaction.setAccountKey(receiverParam.getAccount_key());
+            topTransaction.setKeyValue(receiverParam.getKey_value());
+            topTransaction.setVersion(receiverParam.getVersion());
+            topTransaction.setUnlockType(receiverParam.getUnlock_type());
+            topTransaction.setUnlockValues(receiverParam.getUnlock_values());
+            topTransaction.setParams(receiverParam.getParams());
+            topTransaction.setLockTranHash(receiverParam.getLock_tran_hash());
+            topTransaction.setSignatures(receiverParam.getSignatures());
+            topTransaction.setName(receiverParam.getName());
         }
 
-        transaction.setTimestamp(txInfo.getSend_timestamp());
-        transaction.setTxDeposit(txInfo.getTx_deposit());
+        topTransaction.setTimestamp(txInfo.getSend_timestamp());
+        topTransaction.setTxDeposit(txInfo.getTx_deposit());
 
 
 
-        transaction.setChainZoneType(ZoneRuleUtils.getChainZoneType(tx_action.getSender_action().getTx_sender_account_addr()));
+        topTransaction.setChainZoneType(ZoneRuleUtils.getChainZoneType(tx_action.getSender_action().getTx_sender_account_addr()));
 
         //查询from to账号shard
         AccountResult fromAccount = topGrpcClient.getAccount(from);
         AccountResult toAccount = topGrpcClient.getAccount(to);
-        transaction.setShardFrom(fromAccount.getValue().getGroup_id());
-        transaction.setShardTo(toAccount.getValue().getGroup_id());
+        topTransaction.setShardFrom(fromAccount.getValue().getGroup_id());
+        topTransaction.setShardTo(toAccount.getValue().getGroup_id());
 
 
         //更新交易的unitblock信息
@@ -160,35 +160,35 @@ public class TransactionLoader implements RocketMQListener<String> {
         Confirm_unit_info confirmUnitInfo = state.getConfirm_unit_info();
         //更新交易发起unitblock信息
         if (!ObjectUtils.isEmpty(sendUnitInfo)) {
-            transaction.setSendUsedDeposit(sendUnitInfo.getUsed_deposit());
-            transaction.setSendUsedDisk(sendUnitInfo.getUsed_disk());
-            transaction.setSendUsedGas(sendUnitInfo.getUsed_gas());
-            transaction.setTxFee(sendUnitInfo.getTx_fee());
-            transaction.setSendUnitBlockHash(sendUnitInfo.getUnit_hash());;
+            topTransaction.setSendUsedDeposit(sendUnitInfo.getUsed_deposit());
+            topTransaction.setSendUsedDisk(sendUnitInfo.getUsed_disk());
+            topTransaction.setSendUsedGas(sendUnitInfo.getUsed_gas());
+            topTransaction.setTxFee(sendUnitInfo.getTx_fee());
+            topTransaction.setSendUnitBlockHash(sendUnitInfo.getUnit_hash());;
         }
         //更新交易接收unitblock信息
         if (!ObjectUtils.isEmpty(recvUnitInfo)) {
-            transaction.setRecvUsedDeposit(recvUnitInfo.getUsed_deposit());
-            transaction.setRecvUsedDisk(recvUnitInfo.getUsed_disk());
-            transaction.setRecvUsedGas(recvUnitInfo.getUsed_gas());
-            transaction.setRecUnitBlockHash(recvUnitInfo.getUnit_hash());;
+            topTransaction.setRecvUsedDeposit(recvUnitInfo.getUsed_deposit());
+            topTransaction.setRecvUsedDisk(recvUnitInfo.getUsed_disk());
+            topTransaction.setRecvUsedGas(recvUnitInfo.getUsed_gas());
+            topTransaction.setRecUnitBlockHash(recvUnitInfo.getUnit_hash());;
         }
         //更新确认unitblock信息
         if(!ObjectUtils.isEmpty(confirmUnitInfo)) {
-            transaction.setStatus(confirmUnitInfo.getExec_status());
-            transaction.setUsedDeposit(confirmUnitInfo.getUsed_deposit());
-            transaction.setGasUsed(confirmUnitInfo.getUsed_gas());
-            transaction.setDiskUsed(confirmUnitInfo.getUsed_disk());
-            transaction.setConfirmUnitBlockHash(confirmUnitInfo.getUnit_hash());
+            topTransaction.setStatus(confirmUnitInfo.getExec_status());
+            topTransaction.setUsedDeposit(confirmUnitInfo.getUsed_deposit());
+            topTransaction.setGasUsed(confirmUnitInfo.getUsed_gas());
+            topTransaction.setDiskUsed(confirmUnitInfo.getUsed_disk());
+            topTransaction.setConfirmUnitBlockHash(confirmUnitInfo.getUnit_hash());
         }
 
-        boolean txConfirmed = ObjectUtils.nullSafeEquals("success", transaction.getStatus());
-        boolean saveTxSuccess = transactionService.saveOrUpdate(transaction);
+        boolean txConfirmed = ObjectUtils.nullSafeEquals("success", topTransaction.getStatus());
+        boolean saveTxSuccess = topTransactionService.saveOrUpdate(topTransaction);
 
         if(saveTxSuccess && txConfirmed){
             accountLoader.asyncLoadAccount(from);
             accountLoader.asyncLoadAccount(to);
-            blockMessageProducer.sendNewTransactionMessage(transaction.getHash(), transaction.getFrom(), transaction.getTo(), transaction.getAmount());
+            blockMessageProducer.sendNewTransactionMessage(topTransaction.getHash(), topTransaction.getFrom(), topTransaction.getTo(), topTransaction.getAmount());
         }
 
         return saveTxSuccess;

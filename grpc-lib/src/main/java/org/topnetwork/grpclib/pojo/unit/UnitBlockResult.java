@@ -7,18 +7,13 @@ package org.topnetwork.grpclib.pojo.unit;
 public class UnitBlockResult {
 
 //    private String result;
-    private Value value;
-//    public void setResult(String result) {
-//         this.result = result;
-//     }
-//     public String getResult() {
-//         return result;
-//     }
+    private UnitBlockValue value;
 
-    public void setValue(Value value) {
+
+    public void setValue(UnitBlockValue value) {
          this.value = value;
      }
-     public Value getValue() {
+     public UnitBlockValue getValue() {
          return value;
      }
 

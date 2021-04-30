@@ -253,7 +253,7 @@ CREATE TABLE `rec_transaction` (
 DROP TABLE IF EXISTS `rec_unit_block`;
 CREATE TABLE `rec_unit_block` (
   `xheight` bigint(20) NOT NULL COMMENT '单元块高度',
-  `account` varchar(255) NOT NULL COMMENT '产生unit块的账号地址',
+  `topAccount` varchar(255) NOT NULL COMMENT '产生unit块的账号地址',
   `xhash` varchar(255) NOT NULL COMMENT '单元块hash',
   `zoneId` int(11) NOT NULL COMMENT '单元块zoneId',
   `tableId` int(11) NOT NULL COMMENT '单元块tableId',
@@ -267,7 +267,7 @@ CREATE TABLE `rec_unit_block` (
   `clusterId` int(11) NOT NULL COMMENT '单元块clusterId',
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_xhash` (`xhash`) USING BTREE,
-  UNIQUE KEY `unique_xheight_account` (`xheight`,`account`) USING BTREE
+  UNIQUE KEY `unique_xheight_account` (`xheight`,`topAccount`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='unit块表';
 
 DROP TABLE IF EXISTS `sys_secret_key`;

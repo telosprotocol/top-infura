@@ -1,5 +1,6 @@
 package org.topnetwork.chainpush.runner;
 
+import com.alibaba.fastjson.JSON;
 import org.apache.rocketmq.client.producer.SendResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,20 +39,19 @@ public class ReceiveChainPushRunner implements ApplicationRunner {
     public void run_imp() {
         try {
             LOG.info("Stream block start ip:{},port:{}", ip, port);
-            Iterator<xrpc_reply> it = TopGrpcClient.getInstance(ip, port).createRequest(TopMethod.GET_BLOCK_STREAM.getMethodName(), null).invokeStream();
+            Iterator<TableBlockResult> it = TopGrpcClient.getInstance(ip, port).getTableBlockStream();
             while (it.hasNext()) {
-                xrpc_reply xrpc_reply = it.next();
+                TableBlockResult tableBlockResult = it.next();
                 SendResult sendResult=new SendResult();
                 SendResult wsSendResult=new SendResult();
                 try {
                     //解析数据
-                    TableBlockResult tableBlockResult = TopGrpcClient.xrpc_reply2Stream(xrpc_reply);
                     LOG.info("recv data:", tableBlockResult.toString());
                     sendResult= blockStreamProducer.syncSend(topic, tableBlockResult);
                 } catch (Exception e) {
                     LOG.info("mq异常" + e.getMessage());
                 } finally {
-                    LOG.info(xrpc_reply.getBody()+"===send Result=="+sendResult);
+                    LOG.info(JSON.toJSONString(tableBlockResult)+"===send Result=="+sendResult);
                 }
             }
         } catch (Exception e) {

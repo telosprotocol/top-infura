@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 import org.topnetwork.analysis.service.AccountService;
 import org.topnetwork.analysis.service.TransactionService;
-import org.topnetwork.common.dao.TransactionDao;
+import org.topnetwork.common.dao.TopTransactionDao;
 import org.topnetwork.grpclib.pojo.account.AccountValue;
 import org.topnetwork.grpclib.pojo.transaction.*;
 import org.topnetwork.grpclib.xrpc.TopGrpcClient;
@@ -32,7 +32,7 @@ public class TransactionServiceImpl implements TransactionService {
     private String target;
 
     @SuppressWarnings("unused")
-    private TransactionDao transactionDao;
+    private TopTransactionDao topTransactionDao;
 
     @Autowired
     private AccountService accountService;

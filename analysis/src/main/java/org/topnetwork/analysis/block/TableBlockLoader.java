@@ -3,8 +3,8 @@ package org.topnetwork.analysis.block;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import org.topnetwork.common.entity.TableBlock;
-import org.topnetwork.common.service.TableBlockService;
+import org.topnetwork.common.entity.TopTableBlock;
+import org.topnetwork.common.service.TopTableBlockService;
 import org.topnetwork.grpclib.pojo.stream.*;
 import org.topnetwork.grpclib.xrpc.TopGrpcClient;
 
@@ -18,7 +18,7 @@ import java.util.Map;
 public class TableBlockLoader {
 
     @Autowired
-    TableBlockService tableBlockService;
+    TopTableBlockService topTableBlockService;
 
     @Autowired
     UnitBlockLoader unitBlockLoader;
@@ -51,7 +51,7 @@ public class TableBlockLoader {
     }
 
 
-    private TableBlock saveTableBlock(TableBlockResult tableBlockResult){
+    private TopTableBlock saveTableBlock(TableBlockResult tableBlockResult){
         Value tableBlock = tableBlockResult.getValue();
         Long height = tableBlock.getHeight();
         int clusterId = tableBlock.getCluster_id();
@@ -66,24 +66,24 @@ public class TableBlockLoader {
         Body body = tableBlock.getBody();
         Header header = tableBlock.getHeader();
 
-        TableBlock tableBlockDO = new TableBlock();
-        tableBlockDO.setOwner(owner);
-        tableBlockDO.setHash(hash);
-        tableBlockDO.setPreHash(preHash);
-        tableBlockDO.setHeight(height);
-        tableBlockDO.setTimestamp(timestamp);
-        tableBlockDO.setTableId(tableId);
-        tableBlockDO.setShardId(shardId);
-        tableBlockDO.setClusterId(clusterId);
-        tableBlockDO.setZoneId(zoneId);
-        tableBlockDO.setTimerHeight(header.getTimerblock_height());
-        tableBlockDO.setAuditorXip(header.getAuditor_xip());
-        tableBlockDO.setValidatorAddress(header.getValidator());
-        tableBlockDO.setValidatorXip(header.getValidator_xip());
+        TopTableBlock topTableBlockDO = new TopTableBlock();
+        topTableBlockDO.setOwner(owner);
+        topTableBlockDO.setHash(hash);
+        topTableBlockDO.setPreHash(preHash);
+        topTableBlockDO.setHeight(height);
+        topTableBlockDO.setTimestamp(timestamp);
+        topTableBlockDO.setTableId(tableId);
+        topTableBlockDO.setShardId(shardId);
+        topTableBlockDO.setClusterId(clusterId);
+        topTableBlockDO.setZoneId(zoneId);
+        topTableBlockDO.setTimerHeight(header.getTimerblock_height());
+        topTableBlockDO.setAuditorXip(header.getAuditor_xip());
+        topTableBlockDO.setValidatorAddress(header.getValidator());
+        topTableBlockDO.setValidatorXip(header.getValidator_xip());
 
-        tableBlockService.save(tableBlockDO);
+        topTableBlockService.save(topTableBlockDO);
 
-        return tableBlockDO;
+        return topTableBlockDO;
     }
 
     /**
@@ -96,12 +96,14 @@ public class TableBlockLoader {
             return;
         }
 
+
         Map<String, UnitsBlockMap> unitsBlockMapMap = tableblock.getUnits();
         for (Map.Entry<String, UnitsBlockMap> entry : unitsBlockMapMap.entrySet()) {
+            String tableHash = tableBlockResult.getValue().getHash();
             String account = entry.getKey();
             Long height = entry.getValue().getUnit_height();
 
-            unitBlockLoader.asyncSaveNewUnitBlock(account, height);
+            unitBlockLoader.asyncSaveNewUnitBlock(tableHash,account, height);
         }
     }
 
@@ -126,8 +128,5 @@ public class TableBlockLoader {
             }
         }
     }
-
-
-
 
 }

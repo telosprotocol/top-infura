@@ -1,7 +1,6 @@
 package org.topnetwork.common;
 
 import com.baomidou.mybatisplus.annotation.DbType;
-import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
 import com.baomidou.mybatisplus.generator.InjectionConfig;
 import com.baomidou.mybatisplus.generator.config.*;
@@ -9,7 +8,6 @@ import com.baomidou.mybatisplus.generator.config.converts.MySqlTypeConvert;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +24,7 @@ public class DBCodeAutoGenerater {
         String password = "top123@com";
         DBCodeAutoGenerater dbCodeAutoGenerater = new DBCodeAutoGenerater(jdbcUrl, username, password);
         dbCodeAutoGenerater.generateTables(
-                "top_block_scan");
+                "top_node_info");
     }
 
     private String jdbc;
@@ -82,7 +80,7 @@ public class DBCodeAutoGenerater {
         // 策略配置
         StrategyConfig strategy = new StrategyConfig();
         // strategy.setCapitalMode(true);// 全局大写命名 ORACLE 注意
-        strategy.setTablePrefix(new String[]{"top_"});// 此处可以修改为您的表前缀
+        strategy.setTablePrefix(new String[]{});// 此处可以修改为您的表前缀
         strategy.setNaming(NamingStrategy.underline_to_camel);// 表名生成策略
         strategy.setColumnNaming(NamingStrategy.underline_to_camel);
         strategy.setInclude(tables); // 需要生成的表
@@ -124,9 +122,9 @@ public class DBCodeAutoGenerater {
         // templateConfig.setService();
         // templateConfig.setController();
         templateConfig.setController(null);
-//        templateConfig.setXml(true);
-//        templateConfig.setService(true);
-//        templateConfig.setServiceImpl(null);
+        templateConfig.setXml(null);
+        templateConfig.setService(null);
+        templateConfig.setServiceImpl(null);
         templateConfig.setEntity("templates/entity.java.vm");
         mpg.setTemplate(templateConfig);
 

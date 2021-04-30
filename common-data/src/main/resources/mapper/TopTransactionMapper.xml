@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.topnetwork.common.dao.TopTransactionDao">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="org.topnetwork.common.entity.TopTransaction">
+        <id column="id" property="id" />
+        <result column="hash" property="hash" />
+        <result column="type" property="type" />
+        <result column="timestamp" property="timestamp" />
+        <result column="from" property="from" />
+        <result column="to" property="to" />
+        <result column="amount" property="amount" />
+        <result column="note" property="note" />
+        <result column="last_tx_nonce" property="lastTxNonce" />
+        <result column="tx_len" property="txLen" />
+        <result column="status" property="status" />
+        <result column="shard_from" property="shardFrom" />
+        <result column="shard_to" property="shardTo" />
+        <result column="used_deposit" property="usedDeposit" />
+        <result column="gas_used" property="gasUsed" />
+        <result column="disk_used" property="diskUsed" />
+        <result column="tx_deposit" property="txDeposit" />
+        <result column="chain_zone_type" property="chainZoneType" />
+        <result column="func_name" property="funcName" />
+        <result column="para" property="para" />
+        <result column="address" property="address" />
+        <result column="token_name" property="tokenName" />
+        <result column="tgas_limit" property="tgasLimit" />
+        <result column="code" property="code" />
+        <result column="vote_num" property="voteNum" />
+        <result column="lock_duration" property="lockDuration" />
+        <result column="account_key" property="accountKey" />
+        <result column="key_value" property="keyValue" />
+        <result column="version" property="version" />
+        <result column="unlock_type" property="unlockType" />
+        <result column="unlock_values" property="unlockValues" />
+        <result column="params" property="params" />
+        <result column="lock_tran_hash" property="lockTranHash" />
+        <result column="signatures" property="signatures" />
+        <result column="name" property="name" />
+        <result column="recv_used_deposit" property="recvUsedDeposit" />
+        <result column="recv_used_gas" property="recvUsedGas" />
+        <result column="recv_used_disk" property="recvUsedDisk" />
+        <result column="send_used_deposit" property="sendUsedDeposit" />
+        <result column="send_used_gas" property="sendUsedGas" />
+        <result column="send_used_disk" property="sendUsedDisk" />
+        <result column="sender_action_param" property="senderActionParam" />
+        <result column="receiver_action_param" property="receiverActionParam" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="unit_block_hash" property="unitBlockHash" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, hash, type, timestamp, from, to, amount, note, last_tx_nonce, tx_len, status, shard_from, shard_to, used_deposit, gas_used, disk_used, tx_deposit, chain_zone_type, func_name, para, address, token_name, tgas_limit, code, vote_num, lock_duration, account_key, key_value, version, unlock_type, unlock_values, params, lock_tran_hash, signatures, name, recv_used_deposit, recv_used_gas, recv_used_disk, send_used_deposit, send_used_gas, send_used_disk, sender_action_param, receiver_action_param, create_time, update_time, unit_block_hash
+    </sql>
+
+</mapper>

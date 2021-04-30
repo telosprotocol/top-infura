@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 import org.topnetwork.analysis.service.TableBlockService;
 import org.topnetwork.analysis.service.UnitBlockService;
-import org.topnetwork.common.dao.TableBlockDao;
+import org.topnetwork.common.dao.TopTableBlockDao;
 import org.topnetwork.grpclib.pojo.stream.LightUnitInput;
 import org.topnetwork.grpclib.pojo.stream.TableBlockResult;
 import org.topnetwork.grpclib.pojo.stream.UnitsBlockMap;
@@ -34,7 +34,7 @@ public class TableBlockServiceImpl implements TableBlockService {
     private UnitBlockService unitBlockService;
 
     @SuppressWarnings("unused")
-    private TableBlockDao tableBlockDao;
+    private TopTableBlockDao topTableBlockDao;
 
     @Autowired
     private RocketMQTemplate rocketMQTemplate;
