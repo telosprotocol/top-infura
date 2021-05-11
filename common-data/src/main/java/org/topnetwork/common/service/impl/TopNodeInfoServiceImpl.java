@@ -54,7 +54,8 @@ public class TopNodeInfoServiceImpl extends ServiceImpl<TopNodeInfoDao, TopNodeI
         updateWrapper.set("name", topNodeInfo.getName());
 
         updateWrapper.eq("address", topNodeInfo.getAddress());
-        updateWrapper.eq("type", topNodeInfo.getType());
+        //advance节点就是auditor节点，这个接口返回的跟其他不一样 统一成auditor
+        updateWrapper.eq("type", topNodeInfo.getType().replace("advance", "auditor"));
 
         return update(updateWrapper);
     }

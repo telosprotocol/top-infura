@@ -24,7 +24,7 @@ public class DBCodeAutoGenerater {
         String password = "top123@com";
         DBCodeAutoGenerater dbCodeAutoGenerater = new DBCodeAutoGenerater(jdbcUrl, username, password);
         dbCodeAutoGenerater.generateTables(
-                "top_node_info");
+                "top_unit_block");
     }
 
     private String jdbc;

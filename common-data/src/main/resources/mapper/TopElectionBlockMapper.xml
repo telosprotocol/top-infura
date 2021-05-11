@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.topnetwork.common.dao.TopElectionBlockDao">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="org.topnetwork.common.entity.TopElectionBlock">
+        <id column="id" property="id" />
+        <result column="block_hash" property="blockHash" />
+        <result column="block_timer_height" property="blockTimerHeight" />
+        <result column="block_prev_hash" property="blockPrevHash" />
+        <result column="auditor_xip" property="auditorXip" />
+        <result column="validator" property="validator" />
+        <result column="validator_xip" property="validatorXip" />
+        <result column="owner" property="owner" />
+        <result column="block_timestamp" property="blockTimestamp" />
+        <result column="account" property="account" />
+        <result column="group_id" property="groupId" />
+        <result column="node_type" property="nodeType" />
+        <result column="public_key" property="publicKey" />
+        <result column="slot_id" property="slotId" />
+        <result column="stake" property="stake" />
+        <result column="start_timer_height" property="startTimerHeight" />
+        <result column="timestamp" property="timestamp" />
+        <result column="version" property="version" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, block_hash, block_timer_height, block_prev_hash, auditor_xip, validator, validator_xip, owner, block_timestamp, account, group_id, node_type, public_key, slot_id, stake, start_timer_height, timestamp, version, create_time, update_time
+    </sql>
+
+</mapper>

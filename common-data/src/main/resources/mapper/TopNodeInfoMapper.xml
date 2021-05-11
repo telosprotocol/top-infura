@@ -8,11 +8,8 @@
         <result column="name" property="name" />
         <result column="type" property="type" />
         <result column="address" property="address" />
-        <result column="elected" property="elected" />
         <result column="last_claim_timestamp" property="lastClaimTimestamp" />
         <result column="last_issue_timestamp" property="lastIssueTimestamp" />
-        <result column="last_elected_time" property="lastElectedTime" />
-        <result column="last_elected_block_height" property="lastElectedBlockHeight" />
         <result column="unclaim_amount" property="unclaimAmount" />
         <result column="accumulated_amount" property="accumulatedAmount" />
         <result column="auditor_credit" property="auditorCredit" />
@@ -33,7 +30,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, name, type, address, elected, last_claim_timestamp, last_issue_timestamp, last_elected_time, last_elected_block_height, unclaim_amount, accumulated_amount, auditor_credit, auditor_stake, validator_credit, validator_stake, dividen_ratio, network_id, node_deposit, node_sign_key, vote_amount, rec_stake, zec_stake, version, create_time, update_time
+        id, name, type, address, last_claim_timestamp, last_issue_timestamp, unclaim_amount, accumulated_amount, auditor_credit, auditor_stake, validator_credit, validator_stake, dividen_ratio, network_id, node_deposit, node_sign_key, vote_amount, rec_stake, zec_stake, version, create_time, update_time
     </sql>
 
 </mapper>

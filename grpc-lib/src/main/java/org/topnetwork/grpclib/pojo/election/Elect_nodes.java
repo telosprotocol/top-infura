@@ -1,11 +1,14 @@
 package org.topnetwork.grpclib.pojo.election;
 
+import lombok.Data;
+
 import java.math.BigInteger;
 
 /**
  * @author bejson.com (i@bejson.com)
  * @website http://www.bejson.com/java2pojo/
  */
+@Data
 public class Elect_nodes {
 
     private String account;

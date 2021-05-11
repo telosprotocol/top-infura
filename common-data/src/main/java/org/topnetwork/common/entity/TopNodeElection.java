@@ -16,7 +16,7 @@ import lombok.EqualsAndHashCode;
  * </p>
  *
  * @author CasonCai
- * @since 2021-04-20
+ * @since 2021-05-08
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -25,93 +25,27 @@ public class TopNodeElection extends Model<TopNodeElection> {
 
     private static final long serialVersionUID = 1L;
 
-    /**
-     * 主键
-     */
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    /**
-     * edge节点数量
-     */
-    @TableField("edge")
-    private Integer edge;
+    @TableField("address")
+    private String address;
 
-    /**
-     * archive节点数量
-     */
-    @TableField("archive")
-    private Integer archive;
+    @TableField("type")
+    private String type;
 
-    /**
-     * auditor节点数量
-     */
-    @TableField("auditor")
-    private Integer auditor;
+    @TableField("elected")
+    private Boolean elected;
 
-    /**
-     * validator节点数量
-     */
-    @TableField("validator")
-    private Integer validator;
+    @TableField("last_elected_time")
+    private LocalDateTime lastElectedTime;
 
-    /**
-     * root_beacon节点数量
-     */
-    @TableField("root_beacon")
-    private Integer rootBeacon;
+    @TableField("last_elected_block_height")
+    private Long lastElectedBlockHeight;
 
-    /**
-     * sub_beacon节点数量
-     */
-    @TableField("sub_beacon")
-    private Integer subBeacon;
-
-    /**
-     * edge节点本轮块高
-     */
-    @TableField("edgeHeight")
-    private String edgeHeight;
-
-    /**
-     * archive节点本轮块高
-     */
-    @TableField("archiveHeight")
-    private String archiveHeight;
-
-    /**
-     * auditor节点本轮块高
-     */
-    @TableField("auditorHeight")
-    private String auditorHeight;
-
-    /**
-     * validator节点本轮块高
-     */
-    @TableField("validatorHeight")
-    private String validatorHeight;
-
-    /**
-     * root_beacon节点本轮块高
-     */
-    @TableField("root_beaconHeight")
-    private String rootBeaconheight;
-
-    /**
-     * sub_beacon节点本轮块高
-     */
-    @TableField("sub_beaconHeight")
-    private String subBeaconheight;
-
-    /**
-     * 创建时间
-     */
     @TableField("create_time")
     private LocalDateTime createTime;
 
-    /**
-     * 最后修改时间
-     */
     @TableField("update_time")
     private LocalDateTime updateTime;
 

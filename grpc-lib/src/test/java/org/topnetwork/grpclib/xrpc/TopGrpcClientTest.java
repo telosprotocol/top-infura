@@ -3,7 +3,7 @@ package org.topnetwork.grpclib.xrpc;
 import com.alibaba.fastjson.JSON;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.util.ObjectUtils;
+import org.topnetwork.grpclib.pojo.election.ElectionBlockResult;
 import org.topnetwork.grpclib.pojo.node.IssuanceDetailResult;
 import org.topnetwork.grpclib.pojo.node.NodeResult;
 import org.topnetwork.grpclib.pojo.node.NodeRewardResult;
@@ -15,6 +15,7 @@ import org.topnetwork.grpclib.pojo.transaction.TransactionResult;
 import org.topnetwork.grpclib.pojo.unit.Lightunit;
 import org.topnetwork.grpclib.pojo.unit.UnitBlockResult;
 import org.topnetwork.grpclib.pojo.unit.UnitBlockValue;
+import org.topnetwork.rpclib.TopRpcClient;
 
 import java.util.Iterator;
 import java.util.List;
@@ -24,9 +25,11 @@ public class TopGrpcClientTest {
 
     TopGrpcClient topGrpcClient;
 
+    TopRpcClient topRpcClient;
     @Before
     public void setUp() {
         topGrpcClient = TopGrpcClient.getInstance("206.189.190.31", 19082);
+        topRpcClient = new TopRpcClient("206.189.190.31", 19081);
     }
 
     @Test
@@ -53,7 +56,7 @@ public class TopGrpcClientTest {
                 UnitsBlockMap unitsBlockMap = entry.getValue();
                 Long unitHeight = unitsBlockMap.getUnit_height();
                 Map<String, LightUnitInput> lightUnitInputMap = unitsBlockMap.getLightunit_input();
-                if (ObjectUtils.isEmpty(lightUnitInputMap)) {
+                if (lightUnitInputMap == null) {
                     continue;
                 }
 
@@ -80,7 +83,7 @@ public class TopGrpcClientTest {
 
     @Test
     public void testTransaction() {
-        TransactionResult result = topGrpcClient.getTransaction("0x7a2e0278aee15c5721ca5354d6f4498c80477d999c6dc663b65f59587079830a");
+        TransactionResult result = topGrpcClient.getTransaction("0x5c4e96fad0c6e54bfeb225893542f0f02df23a23a980572b2f54c0881c9bd36e");
         System.out.println(JSON.toJSONString(result));
     }
 
@@ -89,6 +92,12 @@ public class TopGrpcClientTest {
 
         topGrpcClient.getUnitBlock("Ta00025E3y1TBsbnvZHcq1eELBBQH4D5tFbg1jQqY@2", 80312L);
 
+    }
+
+    @Test
+    public void testGetElection(){
+        ElectionBlockResult result = topGrpcClient.getElectionBlock("T200024uHxGKRST3hk5tKFjVpuQbGNDihMJR6qeeQ@2", 10L);
+        System.out.println(JSON.toJSONString(result));
     }
 
     @Test
@@ -131,5 +140,12 @@ public class TopGrpcClientTest {
 
         NodeRewardResult rewardResult = topGrpcClient.queryNodeReward();
         System.out.println(rewardResult);
+    }
+
+    @Test
+    public void testListVoteUsed(){
+        String result = topRpcClient.listVoteUsed("T00000LaZkh8p5hFGsHsWz6JbAKqnAeVjtSviq4p");
+        System.out.println(result);
+
     }
 }

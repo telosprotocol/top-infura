@@ -47,12 +47,6 @@ public class TopTransaction extends Model<TopTransaction> {
     private TxType type;
 
     /**
-     * 交易时间
-     */
-    @TableField("timestamp")
-    private Long timestamp;
-
-    /**
      * 发送人
      */
     @TableField("`from`")
@@ -69,9 +63,6 @@ public class TopTransaction extends Model<TopTransaction> {
      */
     @TableField("amount")
     private BigInteger amount;
-
-    @TableField("tx_fee")
-    private BigInteger txFee;
 
     /**
      * 备注
@@ -90,43 +81,7 @@ public class TopTransaction extends Model<TopTransaction> {
      */
     @TableField("tx_len")
     private BigInteger txLen;
-
-    /**
-     * 状态
-     */
-    @TableField("status")
-    private String status;
-
-    /**
-     * 分片from
-     */
-    @TableField("shard_from")
-    private Integer shardFrom;
-
-    /**
-     * 分片to
-     */
-    @TableField("shard_to")
-    private Integer shardTo;
-
-    /**
-     * used_deposit
-     */
-    @TableField("used_deposit")
-    private BigInteger usedDeposit;
-
-    /**
-     * gas used
-     */
-    @TableField("gas_used")
-    private Long gasUsed;
-
-    /**
-     * disk used
-     */
-    @TableField("disk_used")
-    private Long diskUsed;
-
+    
     /**
      * 交易保证金，单位uTOP
      */
@@ -139,158 +94,6 @@ public class TopTransaction extends Model<TopTransaction> {
     @TableField("chain_zone_type")
     private ChainZoneType chainZoneType;
 
-    /**
-     * 执行合约的函数名
-     */
-    @TableField("func_name")
-    private String funcName;
-
-    /**
-     * 执行合约的参数
-     */
-    @TableField("func_input")
-    private String funcInput;
-
-    /**
-     * 币名
-     */
-    @TableField("token_name")
-    private String tokenName;
-
-    /**
-     * 一次合约调用中，合约账户愿意支付的最大tgas
-     */
-    @TableField("tgas_limit")
-    private String tgasLimit;
-
-    /**
-     * 合约代码
-     */
-    @TableField("code")
-    private String code;
-
-    /**
-     * 兑票数
-     */
-    @TableField("vote_num")
-    private String voteNum;
-
-    /**
-     * 票的锁定时长（天）
-     */
-    @TableField("lock_duration")
-    private String lockDuration;
-
-    /**
-     * 属性的key
-     */
-    @TableField("account_key")
-    private String accountKey;
-
-    /**
-     * 设置的值
-     */
-    @TableField("key_value")
-    private String keyValue;
-
-    /**
-     * 版本
-     */
-    @TableField("version")
-    private String version;
-
-    /**
-     * 解锁类型
-     */
-    @TableField("unlock_type")
-    private String unlockType;
-
-    /**
-     * 解锁类型对应的值
-     */
-    @TableField("unlock_values")
-    private String unlockValues;
-
-    /**
-     * 序列化的锁定上下文
-     */
-    @TableField("params")
-    private String params;
-
-    /**
-     * 锁定交易的hash
-     */
-    @TableField("lock_tran_hash")
-    private String lockTranHash;
-
-    /**
-     * 签名
-     */
-    @TableField("signatures")
-    private String signatures;
-
-    /**
-     * 别名
-     */
-    @TableField("name")
-    private String name;
-
-    /**
-     * recv_used_deposit
-     */
-    @TableField("recv_used_deposit")
-    private BigInteger recvUsedDeposit;
-
-    /**
-     * recv_used_gas
-     */
-    @TableField("recv_used_gas")
-    private BigInteger recvUsedGas;
-
-    /**
-     * recv_used_disk
-     */
-    @TableField("recv_used_disk")
-    private BigInteger recvUsedDisk;
-
-    /**
-     * send_used_deposit
-     */
-    @TableField("send_used_deposit")
-    private BigInteger sendUsedDeposit;
-
-    /**
-     * send_used_gas
-     */
-    @TableField("send_used_gas")
-    private BigInteger sendUsedGas;
-
-    /**
-     * send_used_disk
-     */
-    @TableField("send_used_disk")
-    private BigInteger sendUsedDisk;
-
-    /**
-     * sender_action_param
-     */
-    @TableField("sender_action_param")
-    private String senderActionParam;
-
-    /**
-     * receiver_action_param
-     */
-    @TableField("receiver_action_param")
-    private String receiverActionParam;
-
-    @TableField("send_unitblock_hash")
-    private String sendUnitBlockHash;
-
-    @TableField("rec_unitblock_hash")
-    private String recUnitBlockHash;
-
-    @TableField("confirm_unitblock_hash")
-    private String confirmUnitBlockHash;
 
     /**
      * 创建时间
@@ -304,12 +107,299 @@ public class TopTransaction extends Model<TopTransaction> {
     @TableField("update_time")
     private LocalDateTime updateTime;
 
-    /**
-     * unit block hash
-     */
-    @TableField("unit_block_hash")
-    private String unitBlockHash;
+    /******************tx info***********************/
+    @TableField("authorization")
+    private String authorization;
 
+    @TableField("challenge_proof")
+    private String challengeProof;
+
+    @TableField("edge_nodeid")
+    private String edgeNodeId;
+
+    @TableField("ext")
+    private String ext;
+
+    @TableField("from_network_id")
+    private Integer fromNetworkId;
+
+    @TableField("to_network_id")
+    private Integer toNetworkId;
+    @TableField("parent_account")
+    private String parentAccount;
+
+    @TableField("send_timestamp")
+    private Long sendTimestamp;
+
+
+    @TableField("tx_expire_duration")
+    private Integer txExpireDuration;
+
+    @TableField("tx_random_nonce")
+    private Integer txRandomNonce;
+
+    @TableField("tx_structure_version")
+    private Integer txStructureVersion;
+
+    @TableField("last_tx_hash")
+    private String lastTxHash;
+
+    @TableField("tx_state")
+    private String txState;
+
+    @TableField("from_ledger_id")
+    private Integer fromLedgerId;
+
+    @TableField("to_ledger_id")
+    private Integer toLedgerId;
+
+    @TableField("premium_price")
+    private BigInteger premiumPrice;
+
+    /******************tx info end***********************/
+
+
+
+    /******************send unit***********************/
+    @TableField("send_unit_tx_fee")
+    private BigInteger sendUnitTxFee;
+
+    @TableField("send_unit_height")
+    private Long sendUnitHeight;
+
+    @TableField("send_unit_hash")
+    private String sendUnitHash;
+
+
+    /**
+     * send_used_deposit
+     */
+    @TableField("send_unit_used_deposit")
+    private BigInteger sendUnitUsedDeposit;
+
+    /**
+     * send_used_gas
+     */
+    @TableField("send_unit_used_gas")
+    private BigInteger sendUnitUsedGas;
+
+    /**
+     * send_used_disk
+     */
+    @TableField("send_unit_used_disk")
+    private BigInteger sendUnitUsedDisk;
+    /******************send unit end***********************/
+
+
+
+    /******************recv unit***********************/
+
+    @TableField("recv_unit_hash")
+    private String recvUnitHash;
+
+    @TableField("recv_unit_height")
+    private Long recvUnitHeight;
+
+    /**
+     * recv_used_deposit
+     */
+    @TableField("recv_unit_used_deposit")
+    private BigInteger recvUnitUsedDeposit;
+
+    /**
+     * recv_used_gas
+     */
+    @TableField("recv_unit_used_gas")
+    private BigInteger recvUnitUsedGas;
+
+    /**
+     * recv_used_disk
+     */
+    @TableField("recv_unit_used_disk")
+    private BigInteger recvUnitUsedDisk;
+    /******************recv end***********************/
+
+    /******************confirm unit***********************/
+    @TableField("confirm_unit_hash")
+    private String confirmUnitHash;
+
+    @TableField("confirm_unit_exec_status")
+    private String confirmUnitExecStatus;
+
+    @TableField("confirm_unit_height")
+    private Long confirmUnitHeight;
+
+    @TableField("confirm_unit_tx_exec_status")
+    private String confirmUnitTxExecStatus;
+
+    @TableField("confirm_unit_used_deposit")
+    private BigInteger confirmUnitUsedDeposit;
+
+    @TableField("confirm_unit_used_disk")
+    private BigInteger confirmUnitUsedDisk;
+
+    @TableField("confirm_unit_used_gas")
+    private BigInteger confirmUnitUsedGas;
+
+    /******************confirm unit end***********************/
+
+
+
+
+    /**************sender action*****************/
+
+    @TableField("sender_action_authorization")
+    private String senderActionAutorization;
+
+    @TableField("sender_action_ext")
+    private String senderActionExt;
+
+    @TableField("sender_action_hash")
+    private Long senderActionHash;
+
+    @TableField("sender_action_size")
+    private Long senderActionSize;
+
+    @TableField("sender_action_type")
+    private Integer senderActionType;
+
+    @TableField("sender_action_account_addr")
+    private String senderActionAccountAddr;
+
+    /**************sender action param*****************/
+
+    @TableField("sender_action_param_func_name")
+    private String senderActionParamFuncName;
+
+    @TableField("sender_action_param_paras")
+    private String senderActionParamParas;
+
+    @TableField("sender_acton_param_address")
+    private String senderActionParamAddress;
+
+    @TableField("sender_action_param_token_name")
+    private String senderActionParamTokenName;
+
+    @TableField("sender_action_param_amount")
+    private BigInteger senderActionParamAmount;
+
+    @TableField("sender_action_param_tgas_limit")
+    private BigInteger senderActionParamTgasLimit;
+
+    @TableField("sender_action_param_code")
+    private String senderActionParamCode;
+
+    @TableField("sender_action_param_vote_num")
+    private String senderActionParamVoteNum;
+
+    @TableField("sender_action_param_lock_duration")
+    private String senderActionParamLockDuration;
+
+    @TableField("sender_action_param_account_key")
+    private String senderActionParamAccountKey;
+
+    @TableField("sender_action_param_key_value")
+    private String senderActionParamKeyValue;
+
+    @TableField("sender_action_param_version")
+    private String senderActionParamVersion;
+
+    @TableField("sender_action_param_unlock_type")
+    private String senderActionParamUnlockType;
+
+    @TableField("sender_action_param_unlock_values")
+    private String senderActionParamUnlockValues;
+
+    @TableField("sender_action_param_params")
+    private String senderActionParamParams;
+
+    @TableField("sender_action_param_lock_tran_hash")
+    private String senderActionParamLockTranHash;
+
+    @TableField("sender_action_param_signatures")
+    private String senderActionParamSignatures;
+
+    @TableField("sender_action_param_name")
+    private String senderActionParamName;
+
+    /**************sender action end*****************/
+
+
+    /**************receiver action *****************/
+    @TableField("receiver_action_authorization")
+    private String receiverActionAutorization;
+
+    @TableField("receiver_action_ext")
+    private String receiverActionExt;
+
+    @TableField("receiver_action_hash")
+    private Long receiverActionHash;
+
+    @TableField("receiver_action_size")
+    private Long receiverActionSize;
+
+    @TableField("receiver_action_type")
+    private Integer receiverActionType;
+
+    @TableField("receiver_action_account_addr")
+    private String receiverActionAccountAddr;
+
+    /**************receiver action param*****************/
+    @TableField("receiver_action_param_func_name")
+    private String receiverActionParamFuncName;
+
+    @TableField("receiver_action_param_paras")
+    private String receiverActionParamParas;
+
+    @TableField("receiver_acton_param_address")
+    private String receiverActionParamAddress;
+
+    @TableField("receiver_action_param_token_name")
+    private String receiverActionParamTokenName;
+
+    @TableField("receiver_action_param_amount")
+    private BigInteger receiverActionParamAmount;
+
+    @TableField("receiver_action_param_tgas_limit")
+    private BigInteger receiverActionParamTgasLimit;
+
+    @TableField("receiver_action_param_code")
+    private String receiverActionParamCode;
+
+    @TableField("receiver_action_param_vote_num")
+    private String receiverActionParamVoteNum;
+
+    @TableField("receiver_action_param_lock_duration")
+    private String receiverActionParamLockDuration;
+
+    @TableField("receiver_action_param_account_key")
+    private String receiverActionParamAccountKey;
+
+    @TableField("receiver_action_param_key_value")
+    private String receiverActionParamKeyValue;
+
+    @TableField("receiver_action_param_version")
+    private String receiverActionParamVersion;
+
+    @TableField("receiver_action_param_unlock_type")
+    private String receiverActionParamUnlockType;
+
+    @TableField("receiver_action_param_unlock_values")
+    private String receiverActionParamUnlockValues;
+
+    @TableField("receiver_action_param_params")
+    private String receiverActionParamParams;
+
+    @TableField("receiver_action_param_lock_tran_hash")
+    private String receiverActionParamLockTranHash;
+
+    @TableField("receiver_action_param_signatures")
+    private String receiverActionParamSignatures;
+
+    @TableField("receiver_action_param_name")
+    private String receiverActionParamName;
+
+    /**************receiver action end *****************/
 
     @Override
     protected Serializable pkVal() {

@@ -1,6 +1,7 @@
 package org.topnetwork.common.utils;
 
 import org.springframework.util.ObjectUtils;
+import org.topnetwork.common.constant.TopAddress;
 import org.topnetwork.common.constant.TopConstants;
 import org.topnetwork.common.enums.AccountTypeEnum;
 
@@ -52,4 +53,18 @@ public class TopUtils {
     public static Long convertTimerHeight2Timestamp(Long timerHeight){
         return TopConstants.FIRST_BLOCK_TIMESTAMP + timerHeight * 10;
     }
+
+    public static boolean isTableBlockAddress(String address){
+        return address.startsWith(TopAddress.BASE_TABLEBLOCK_ADDRESS);
+    }
+
+    public static Integer getTableBlockAddressNum(String address){
+        if(!isTableBlockAddress(address)){
+            return null;
+        }
+
+        String numPart = address.split("@")[1];
+        return Integer.parseInt(numPart);
+    }
+
 }

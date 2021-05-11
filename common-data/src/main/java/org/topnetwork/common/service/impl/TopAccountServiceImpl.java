@@ -1,6 +1,7 @@
 package org.topnetwork.common.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.topnetwork.common.entity.TopAccount;
 import org.topnetwork.common.dao.TopAccountDao;
 import org.topnetwork.common.service.TopAccountService;
@@ -23,5 +24,15 @@ public class TopAccountServiceImpl extends ServiceImpl<TopAccountDao, TopAccount
         QueryWrapper wrapper = new QueryWrapper();
         wrapper.eq("address", address);
         return getOne(wrapper);
+    }
+
+    @Override
+    public Page<TopAccount> getAccounts(long pageNum, long pageSize) {
+        QueryWrapper wrapper = new QueryWrapper();
+
+        Page page = new Page(pageNum, pageSize);
+
+
+        return baseMapper.selectPage(page, wrapper);
     }
 }

@@ -9,10 +9,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.topnetwork.chainpush.mq.BlockStreamProducer;
-import org.topnetwork.grpclib.enums.TopMethod;
 import org.topnetwork.grpclib.pojo.stream.TableBlockResult;
 import org.topnetwork.grpclib.xrpc.TopGrpcClient;
-import org.topnetwork.grpclib.xrpc.xrpc_reply;
 import org.topnetwork.grpclib.xrpc.xrpc_serviceGrpc;
 
 import java.util.Iterator;

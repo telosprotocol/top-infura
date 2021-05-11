@@ -139,6 +139,7 @@ public class NodeIssuanceLoader {
             topNodeIssuance.setValidatorRewardRatio(issuanceDetailValue.getValidator_reward_ratio());
             topNodeIssuance.setVoteRewardRatio(issuanceDetailValue.getVote_reward_ratio());
             topNodeIssuance.setTimerHeight(issuanceDetailValue.getOnchain_timer_round());
+            topNodeIssuance.setTimestamp(TopUtils.convertTimerHeight2Timestamp(issuanceDetailValue.getOnchain_timer_round().longValue()));
             topNodeIssuance.setZecRewardContractHeight(issuanceDetailValue.getZec_reward_contract_height());
             topNodeIssuance.setZecVoteContractHeight(issuanceDetailValue.getZec_vote_contract_height());
             topNodeIssuance.setZecWorkloadContractHeight(issuanceDetailValue.getZec_workload_contract_height());

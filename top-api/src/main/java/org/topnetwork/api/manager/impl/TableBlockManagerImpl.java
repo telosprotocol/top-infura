@@ -7,6 +7,7 @@ import org.topnetwork.common.entity.TopTableBlock;
 import org.topnetwork.common.service.TopTableBlockService;
 
 import java.math.BigInteger;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -19,7 +20,9 @@ public class TableBlockManagerImpl implements TableBlockManager {
     private TopTableBlockService tableBlockService;
 
     @Override
-    public Map<String, BigInteger> getLatestTableBlockHeight() {
+    public List<Long> getLatestTableBlockHeight() {
+
+
         return null;
     }
 

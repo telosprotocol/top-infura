@@ -1,9 +1,14 @@
 package org.topnetwork.grpclib.pojo.transaction;
 
+import lombok.Data;
+
+import java.math.BigInteger;
+
 /**
  * @author bejson.com (i@bejson.com)
  * @website http://www.bejson.com/java2pojo/
  */
+@Data
 public class Action_param {
 
     /**
@@ -25,11 +30,11 @@ public class Action_param {
     /**
      * xaction_asset_out 转出币的数量
      */
-    private String amount;
+    private BigInteger amount;
     /**
      * xaction_deploy_contract 币一次合约调用中，合约账户愿
      */
-    private String tgas_limit;
+    private BigInteger tgas_limit;
     /**
      * xaction_deploy_contract 合约代码
      */
@@ -83,145 +88,6 @@ public class Action_param {
         return func_name;
     }
 
-    public void setFunc_name(String func_name) {
-        this.func_name = func_name;
-    }
-
-    public String getParas() {
-        return paras;
-    }
-
-    public void setParas(String paras) {
-        this.paras = paras;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getToken_name() {
-        return token_name;
-    }
-
-    public void setToken_name(String token_name) {
-        this.token_name = token_name;
-    }
-
-    public String getAmount() {
-        return amount;
-    }
-
-    public void setAmount(String amount) {
-        this.amount = amount;
-    }
-
-    public String getTgas_limit() {
-        return tgas_limit;
-    }
-
-    public void setTgas_limit(String tgas_limit) {
-        this.tgas_limit = tgas_limit;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getVote_num() {
-        return vote_num;
-    }
-
-    public void setVote_num(String vote_num) {
-        this.vote_num = vote_num;
-    }
-
-    public String getLock_duration() {
-        return lock_duration;
-    }
-
-    public void setLock_duration(String lock_duration) {
-        this.lock_duration = lock_duration;
-    }
-
-    public String getAccount_key() {
-        return account_key;
-    }
-
-    public void setAccount_key(String account_key) {
-        this.account_key = account_key;
-    }
-
-    public String getKey_value() {
-        return key_value;
-    }
-
-    public void setKey_value(String key_value) {
-        this.key_value = key_value;
-    }
-
-    public String getVersion() {
-        return version;
-    }
-
-    public void setVersion(String version) {
-        this.version = version;
-    }
-
-    public String getUnlock_type() {
-        return unlock_type;
-    }
-
-    public void setUnlock_type(String unlock_type) {
-        this.unlock_type = unlock_type;
-    }
-
-    public String getUnlock_values() {
-        return unlock_values;
-    }
-
-    public void setUnlock_values(String unlock_values) {
-        this.unlock_values = unlock_values;
-    }
-
-    public String getParams() {
-        return params;
-    }
-
-    public void setParams(String params) {
-        this.params = params;
-    }
-
-    public String getLock_tran_hash() {
-        return lock_tran_hash;
-    }
-
-    public void setLock_tran_hash(String lock_tran_hash) {
-        this.lock_tran_hash = lock_tran_hash;
-    }
-
-    public String getSignatures() {
-        return signatures;
-    }
-
-    public void setSignatures(String signatures) {
-        this.signatures = signatures;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     @Override
     public String toString() {

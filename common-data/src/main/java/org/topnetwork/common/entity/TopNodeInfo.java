@@ -19,7 +19,7 @@ import lombok.EqualsAndHashCode;
  * </p>
  *
  * @author CasonCai
- * @since 2021-04-30
+ * @since 2021-05-08
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -50,12 +50,6 @@ public class TopNodeInfo extends Model<TopNodeInfo> {
     private String address;
 
     /**
-     * 是否当选
-     */
-    @TableField("elected")
-    private Integer elected;
-
-    /**
      * 上次获得奖励的时间
      */
     @TableField("last_claim_timestamp")
@@ -66,18 +60,6 @@ public class TopNodeInfo extends Model<TopNodeInfo> {
      */
     @TableField("last_issue_timestamp")
     private Long lastIssueTimestamp;
-
-    /**
-     * 上次当选时间
-     */
-    @TableField("last_elected_time")
-    private LocalDateTime lastElectedTime;
-
-    /**
-     * 上次当选的区块高度
-     */
-    @TableField("last_elected_block_height")
-    private Long lastElectedBlockHeight;
 
     /**
      * 未领取奖励

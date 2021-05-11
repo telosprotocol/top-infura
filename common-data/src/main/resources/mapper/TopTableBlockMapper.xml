@@ -6,9 +6,9 @@
     <resultMap id="BaseResultMap" type="org.topnetwork.common.entity.TopTableBlock">
         <id column="id" property="id" />
         <result column="height" property="height" />
-        <result column="miner_address" property="minerAddress" />
+        <result column="owner" property="owner" />
         <result column="hash" property="hash" />
-        <result column="pre_hash" property="preHash" />
+        <result column="prev_hash" property="prevHash" />
         <result column="table_id" property="tableId" />
         <result column="shard_id" property="shardId" />
         <result column="cluster_id" property="clusterId" />
@@ -16,20 +16,16 @@
         <result column="timestamp" property="timestamp" />
         <result column="auditor_xip" property="auditorXip" />
         <result column="timer_height" property="timerHeight" />
-        <result column="validator_address" property="validatorAddress" />
+        <result column="validator" property="validator" />
         <result column="validator_xip" property="validatorXip" />
+        <result column="unitblock_count" property="unitblockCount" />
         <result column="create_time" property="createTime" />
         <result column="update_time" property="updateTime" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, height, miner_address, hash, pre_hash, table_id, shard_id, cluster_id, zone_id, timestamp, auditor_xip, timer_height, validator_address, validator_xip, create_time, update_time
+        id, height, owner, hash, prev_hash, table_id, shard_id, cluster_id, zone_id, timestamp, auditor_xip, timer_height, validator, validator_xip, unitblock_count, create_time, update_time
     </sql>
-
-    <select id="getLatestBlockHeight">
-        select
-
-    </select>
 
 </mapper>

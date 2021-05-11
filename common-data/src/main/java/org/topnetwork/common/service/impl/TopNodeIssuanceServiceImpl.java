@@ -1,10 +1,13 @@
 package org.topnetwork.common.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import org.springframework.stereotype.Service;
 import org.topnetwork.common.entity.TopNodeIssuance;
 import org.topnetwork.common.dao.TopNodeIssuanceDao;
 import org.topnetwork.common.service.TopNodeIssuanceService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * <p>
@@ -26,4 +29,19 @@ public class TopNodeIssuanceServiceImpl extends ServiceImpl<TopNodeIssuanceDao, 
             return maxHeight;
         }
     }
+
+    @Override
+    public List<TopNodeIssuance> getIssuance(String address, Long minTimesatmp, Long maxTimestamp) {
+        QueryWrapper queryWrapper = new QueryWrapper();
+        queryWrapper.eq("address", address);
+        if(minTimesatmp != null){
+            queryWrapper.ge("timestamp", minTimesatmp);
+        }
+
+        if(maxTimestamp != null){
+            queryWrapper.le("timestamp", maxTimestamp);
+        }
+        return list(queryWrapper);
+    }
+
 }

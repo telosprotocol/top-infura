@@ -1,7 +1,7 @@
 package org.topnetwork.common.dao;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.topnetwork.common.entity.TopNodeInfo;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
  * <p>
@@ -9,7 +9,7 @@ import org.topnetwork.common.entity.TopNodeInfo;
  * </p>
  *
  * @author CasonCai
- * @since 2021-04-30
+ * @since 2021-05-08
  */
 public interface TopNodeInfoDao extends BaseMapper<TopNodeInfo> {
 

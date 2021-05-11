@@ -5,7 +5,6 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import com.alibaba.fastjson.JSON;
-import org.springframework.util.ObjectUtils;
 
 import org.topnetwork.grpclib.pojo.account.AccountResult;
 import org.topnetwork.grpclib.pojo.election.ElectionBlockResult;
@@ -65,6 +64,17 @@ public class TopGrpcClient {
         return request;
     }
 
+    public xrpc_request createRequest(Map<String, Object> params){
+        if (params == null || params.size() == 0) {
+            params = new HashMap<>();
+        }
+        String action = params.get("action").toString();
+
+        String paramBody = JSON.toJSONString(params);
+        xrpc_request request = xrpc_request.newBuilder().setAction(action).setBody(paramBody).build();
+        return request;
+    }
+
     public String callRequest(xrpc_request request) {
         try {
             xrpc_reply xrpc_reply = blockingStub.call(request);
@@ -73,6 +83,11 @@ public class TopGrpcClient {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public String callRequest(Map<String, Object> params){
+        xrpc_request request = createRequest(params);
+        return callRequest(request);
     }
 
     /**
@@ -94,7 +109,6 @@ public class TopGrpcClient {
             throw e;
         }
     }
-
 
     private <T> T getBlock(String address, Long height, Class<T> clazz){
         T blockResp = null;
@@ -237,7 +251,7 @@ public class TopGrpcClient {
         map.put("tx_hash", hash);
 
         xrpc_request request = this.createRequest("getTransaction",map);
-        String tx = callRequest(request);
+        String  tx = callRequest(request);
 
         TransactionResult accountResult = JSON.parseObject(tx, TransactionResult.class);
         return accountResult;
@@ -327,7 +341,7 @@ public class TopGrpcClient {
         consensusResult.setAuditor(auditorAll);
         consensusResult.setValidator(validatorAll);
 
-        if (!ObjectUtils.isEmpty(clusterValue)) {
+        if (clusterValue == null) {
             Map<String, Object> clusterMaps = clusterValue.getValue();
             for (String key : clusterMaps.keySet()) {
                 if ("null".equalsIgnoreCase(clusterMaps.get(key).toString())) {
@@ -399,6 +413,16 @@ public class TopGrpcClient {
         return result;
     }
 
+
+    public String listVoteUsed(String address){
+        Map<String, Object> params = new HashMap<>();
+        params.put("node_account_addr", address);
+        params.put("account_addr","T20000MVfDLsBKVcy1wMp4CoEHWxUeBEAVBL9ZEa");
+
+        xrpc_request request = this.createRequest("listVoteUsed", params);
+        String resp = callRequest(request);
+        return resp;
+    }
 
 
 }

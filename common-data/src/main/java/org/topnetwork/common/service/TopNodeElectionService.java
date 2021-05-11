@@ -2,6 +2,11 @@ package org.topnetwork.common.service;
 
 import org.topnetwork.common.entity.TopNodeElection;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.topnetwork.common.entity.TopNodeInfo;
+
+import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * <p>
@@ -9,8 +14,15 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * </p>
  *
  * @author CasonCai
- * @since 2021-04-20
+ * @since 2021-05-08
  */
 public interface TopNodeElectionService extends IService<TopNodeElection> {
+
+    List<TopNodeElection> getElectedNodes(List<String> types);
+
+    boolean electeNode(String address, String nodeType, LocalDateTime electedTime, Long electedBlockHeight);
+
+    void loseElectNode(Collection<TopNodeElection> topNodeInfos);
+
 
 }

@@ -7,6 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 import org.topnetwork.analysis.block.NodeInfoLoader;
 import org.topnetwork.analysis.block.NodeIssuanceLoader;
 
@@ -35,8 +37,24 @@ public class SyncNodeInfoJob{
         log.info("start SyncNodeInfoJob");
 
         nodeInfoLoader.loadAllNodeInfo();
-        nodeInfoLoader.loadElectInfo();
 
+        return ReturnT.SUCCESS;
+    }
+
+    @XxlJob("syncNodeElectionJob")
+    public ReturnT<String> syncNodeElectionJob(String s)throws Exception{
+        log.info("start syncNodeInfoJob");
+
+        Long startHeight = null;
+        try{
+            if(StringUtils.hasLength(s)) {
+                startHeight = Long.parseLong(s);
+            }
+        }catch (Exception e){
+            log.error("param error",e);
+            return ReturnT.FAIL;
+        }
+        nodeInfoLoader.loadElectInfo(startHeight);
         return ReturnT.SUCCESS;
     }
 

@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.baomidou.mybatisplus.annotation.TableId;
+
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
@@ -17,7 +19,7 @@ import org.topnetwork.common.enums.UnitBlockType;
  * </p>
  *
  * @author CasonCai
- * @since 2021-04-21
+ * @since 2021-05-10
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -42,16 +44,16 @@ public class TopUnitBlock extends Model<TopUnitBlock> {
     private String hash;
 
     /**
-     * TableBlock hash
+     * 上一个区块hash
+     */
+    @TableField("prev_hash")
+    private String prevHash;
+
+    /**
+     * tableblock hahs
      */
     @TableField("tableblock_hash")
     private String tableblockHash;
-
-    /**
-     * 上一个区块hash
-     */
-    @TableField("pre_hash")
-    private String preHash;
 
     @TableField("zone_id")
     private Integer zoneId;
@@ -86,6 +88,9 @@ public class TopUnitBlock extends Model<TopUnitBlock> {
     @TableField("validator")
     private String validator;
 
+    @TableField("validator_xip")
+    private String validatorXip;
+
     /**
      * 打包交易数量
      */
@@ -97,6 +102,30 @@ public class TopUnitBlock extends Model<TopUnitBlock> {
      */
     @TableField("block_type")
     private UnitBlockType blockType;
+
+    @TableField("balance")
+    private BigInteger balance;
+
+    @TableField("code")
+    private String code;
+
+    @TableField("disk_redeem_num")
+    private Integer diskRedeemNum;
+
+    @TableField("tgas_redeem_num")
+    private Integer tgasRedeemNum;
+
+    @TableField("timer_height")
+    private Long timerHeight;
+
+    @TableField("auditor_xip")
+    private String auditorXip;
+
+    @TableField("balance_change")
+    private BigInteger balanceChange;
+
+    @TableField("burned_amount_change")
+    private BigInteger burnedAmountChange;
 
     @TableField("create_time")
     private LocalDateTime createTime;

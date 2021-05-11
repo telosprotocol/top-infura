@@ -1,5 +1,6 @@
 package org.topnetwork.common.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.topnetwork.common.entity.TopAccount;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -14,5 +15,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface TopAccountService extends IService<TopAccount> {
 
     TopAccount getByAddress(String address);
+
+    Page<TopAccount> getAccounts(long pageNum, long pageSize);
 
 }

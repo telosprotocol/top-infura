@@ -5,25 +5,18 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="org.topnetwork.common.entity.TopNodeElection">
         <id column="id" property="id" />
-        <result column="edge" property="edge" />
-        <result column="archive" property="archive" />
-        <result column="auditor" property="auditor" />
-        <result column="validator" property="validator" />
-        <result column="root_beacon" property="rootBeacon" />
-        <result column="sub_beacon" property="subBeacon" />
-        <result column="edgeHeight" property="edgeHeight" />
-        <result column="archiveHeight" property="archiveHeight" />
-        <result column="auditorHeight" property="auditorHeight" />
-        <result column="validatorHeight" property="validatorHeight" />
-        <result column="root_beaconHeight" property="rootBeaconheight" />
-        <result column="sub_beaconHeight" property="subBeaconheight" />
+        <result column="address" property="address" />
+        <result column="type" property="type" />
+        <result column="elected" property="elected" />
+        <result column="last_elected_time" property="lastElectedTime" />
+        <result column="last_elected_block_height" property="lastElectedBlockHeight" />
         <result column="create_time" property="createTime" />
         <result column="update_time" property="updateTime" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, edge, archive, auditor, validator, root_beacon, sub_beacon, edgeHeight, archiveHeight, auditorHeight, validatorHeight, root_beaconHeight, sub_beaconHeight, create_time, update_time
+        id, address, type, elected, last_elected_time, last_elected_block_height, create_time, update_time
     </sql>
 
 </mapper>

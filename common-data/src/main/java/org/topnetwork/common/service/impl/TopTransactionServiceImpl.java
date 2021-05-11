@@ -1,6 +1,7 @@
 package org.topnetwork.common.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.topnetwork.common.entity.TopTransaction;
 import org.topnetwork.common.dao.TopTransactionDao;
 import org.topnetwork.common.service.TopTransactionService;
@@ -25,4 +26,22 @@ public class TopTransactionServiceImpl extends ServiceImpl<TopTransactionDao, To
 
         return getOne(queryWrapper);
     }
+
+    @Override
+    public Page<TopTransaction> getTransactions(long pageNum, long pageSize) {
+        Page<TopTransaction> page = new Page(pageNum, pageSize);
+
+        QueryWrapper queryWrapper = new QueryWrapper();
+        return baseMapper.selectPage(page, queryWrapper);
+    }
+
+    @Override
+    public Page<TopTransaction> getTransactions(String address, long pageNum, long pageSize) {
+        Page<TopTransaction> page = new Page(pageNum, pageSize);
+        QueryWrapper queryWrapper = new QueryWrapper();
+        queryWrapper.eq("from", address);
+        return baseMapper.selectPage(page, queryWrapper);
+    }
+
+
 }

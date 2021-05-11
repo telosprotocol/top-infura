@@ -1,11 +1,22 @@
 package org.topnetwork.common.enums;
 
 /**
- * @description 六种特殊选举账号，实为5种
+ * 六种特殊选举账号，实为5种
  * @author Tyrone
- * @create 2020-10-13 10:30
+ * @since 2020-10-13 10:30
  */
 public enum AddressEnum {
+
+    /**
+     * auditor
+     */
+    auditor("T200024uHxGKRST3hk5tKFjVpuQbGNDihMJR6qeeQ@2"),
+
+    /**
+     * validator
+     */
+    validator("T200024uHxGKRST3hk5tKFjVpuQbGNDihMJR6qeeQ@2"),
+
     /**
      * edge
      */
@@ -18,18 +29,13 @@ public enum AddressEnum {
      * root_beacon
      */
     root_beacon("T2000138JQPo5TcurZsVLFUMd5vHJRBLenLWjLhk6@0"),
+
     /**
      * sub_beacon
      */
-    sub_beacon("T2000138Kc9WynduqxJvX3VCU7XjHCR9YyKuBL1fx@0"),
-    /**
-     * auditor
-     */
-    auditor("T200024uHxGKRST3hk5tKFjVpuQbGNDihMJR6qeeQ@2"),
-    /**
-     * validator
-     */
-    validator("T200024uHxGKRST3hk5tKFjVpuQbGNDihMJR6qeeQ@2");
+    sub_beacon("T2000138Kc9WynduqxJvX3VCU7XjHCR9YyKuBL1fx@0");
+
+
 
     private String address;
 

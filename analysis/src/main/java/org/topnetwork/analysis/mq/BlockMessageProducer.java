@@ -67,7 +67,7 @@ public class BlockMessageProducer {
 
         @Override
         public void onSuccess(SendResult sendResult) {
-            log.info("send success, content={}", JSON.toJSONString(content));
+            log.debug("send success, content={}", JSON.toJSONString(content));
         }
 
         @Override

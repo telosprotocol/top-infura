@@ -1,6 +1,7 @@
 package org.topnetwork.api.manager;
 
 import org.topnetwork.api.bean.PageData;
+import org.topnetwork.api.bean.resp.UnitBlockResp;
 import org.topnetwork.common.entity.TopUnitBlock;
 
 import java.util.List;
@@ -11,8 +12,8 @@ import java.util.List;
  **/
 public interface UnitBlockManager {
 
-    List<TopUnitBlock> getTopUnitBlock(int pageNum, int pageSize);
+    PageData<UnitBlockResp> getUnitBlocks(long pageNum, long pageSize);
 
-    PageData<TopUnitBlock> getTopUnitBlock(String address, int pageNum, int pageSize);
+    PageData<UnitBlockResp> getUnitBlocks(String address, long pageNum, long pageSize);
 
 }

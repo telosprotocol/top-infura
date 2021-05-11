@@ -1,6 +1,5 @@
 package org.topnetwork.analysis.block;
 
-import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
@@ -15,11 +14,8 @@ import org.topnetwork.analysis.utils.ZoneRuleUtils;
 import org.topnetwork.common.entity.TopTransaction;
 import org.topnetwork.common.enums.TxType;
 import org.topnetwork.common.service.TopTransactionService;
-import org.topnetwork.grpclib.pojo.account.AccountResult;
 import org.topnetwork.grpclib.pojo.transaction.*;
 import org.topnetwork.grpclib.xrpc.TopGrpcClient;
-
-import java.math.BigInteger;
 
 /**
  * 交易数据加载器
@@ -71,7 +67,6 @@ public class TransactionLoader implements RocketMQListener<String> {
             log.info("unkown transaction that txHash = {}",txHash);
             return;
         }
-
         saveToDB(transactionResult);
     }
 
@@ -87,102 +82,151 @@ public class TransactionLoader implements RocketMQListener<String> {
         Tx_action tx_action = txInfo.getTx_action();
         //hash
         String txHash = txInfo.getTx_hash();
-        String from = tx_action.getSender_action().getTx_sender_account_addr();
-        String to = tx_action.getReceiver_action().getTx_receiver_account_addr();
 
         TopTransaction topTransaction = topTransactionService.getTxByHash(txHash);
 
         if(topTransaction == null){
             topTransaction = new TopTransaction();
+        }else if("success".equals(topTransaction.getTxState())){
+            return true;
         }
 
-        Tx_consensus_state state = transactionResult.getValue().getTx_consensus_state();
 
 
-        topTransaction.setHash(txHash);
+        /***************************更新 交易信息***************************************/
+        String from = tx_action.getSender_action().getTx_sender_account_addr();
+        String to = tx_action.getReceiver_action().getTx_receiver_account_addr();
         topTransaction.setFrom(from);
         topTransaction.setTo(to);
-        topTransaction.setType(TxType.parse(txInfo.getTx_type()));
-        topTransaction.setNote(txInfo.getNote());
+
+        topTransaction.setAuthorization(txInfo.getAuthorization());
+        topTransaction.setChallengeProof(txInfo.getChallenge_proof());
+        topTransaction.setEdgeNodeId(txInfo.getEdge_nodeid());
+        topTransaction.setExt(txInfo.getExt());
+        topTransaction.setFromNetworkId(txInfo.getFrom_network_id());
+        topTransaction.setToNetworkId(txInfo.getTo_network_id());
+        topTransaction.setLastTxHash(txInfo.getLast_tx_hash());
         topTransaction.setLastTxNonce(txInfo.getLast_tx_nonce());
-        topTransaction.setTxLen(txInfo.getTx_len());
-
-        //sender字段
-        Action_param senderParam = tx_action.getSender_action().getAction_param();
-        Action_param receiverParam = tx_action.getReceiver_action().getAction_param();
-        topTransaction.setSenderActionParam(JSON.toJSONString(senderParam));
-        topTransaction.setReceiverActionParam(JSON.toJSONString(receiverParam));
-        if (ObjectUtils.isEmpty(senderParam)) {
-            topTransaction.setAmount(BigInteger.ZERO);
-        } else {
-            topTransaction.setAmount(new BigInteger(senderParam.getAmount()));
-            topTransaction.setTokenName(senderParam.getToken_name());
-            topTransaction.setAccountKey(senderParam.getAccount_key());
-            topTransaction.setKeyValue(senderParam.getKey_value());
-            topTransaction.setTgasLimit(senderParam.getTgas_limit());
-        }
-        //receiver字段
-        if (!ObjectUtils.isEmpty(receiverParam)) {
-            topTransaction.setFuncName(receiverParam.getFunc_name());
-            topTransaction.setFuncInput(receiverParam.getParas());
-            topTransaction.setTgasLimit(receiverParam.getTgas_limit());
-            topTransaction.setCode(receiverParam.getCode());
-            topTransaction.setVoteNum(receiverParam.getVote_num());
-            topTransaction.setLockDuration(receiverParam.getLock_duration());
-            topTransaction.setAccountKey(receiverParam.getAccount_key());
-            topTransaction.setKeyValue(receiverParam.getKey_value());
-            topTransaction.setVersion(receiverParam.getVersion());
-            topTransaction.setUnlockType(receiverParam.getUnlock_type());
-            topTransaction.setUnlockValues(receiverParam.getUnlock_values());
-            topTransaction.setParams(receiverParam.getParams());
-            topTransaction.setLockTranHash(receiverParam.getLock_tran_hash());
-            topTransaction.setSignatures(receiverParam.getSignatures());
-            topTransaction.setName(receiverParam.getName());
-        }
-
-        topTransaction.setTimestamp(txInfo.getSend_timestamp());
+        topTransaction.setNote(txInfo.getNote());
+        topTransaction.setParentAccount(txInfo.getParent_account());
+        topTransaction.setSendTimestamp(txInfo.getSend_timestamp());
         topTransaction.setTxDeposit(txInfo.getTx_deposit());
-
-
-
+        topTransaction.setTxExpireDuration(txInfo.getTx_expire_duration());
+        topTransaction.setHash(txInfo.getTx_hash());
+        topTransaction.setTxLen(txInfo.getTx_len());
+        topTransaction.setTxRandomNonce(txInfo.getTx_random_nonce());
+        topTransaction.setTxStructureVersion(txInfo.getTx_structure_version());
+        topTransaction.setType(TxType.parse(txInfo.getTx_type()));
+        topTransaction.setFromLedgerId(txInfo.getFrom_ledger_id());
+        topTransaction.setToLedgerId(txInfo.getTo_ledger_id());
+        topTransaction.setPremiumPrice(txInfo.getPremium_price());
+        topTransaction.setTxState(txInfo.getTx_state());
         topTransaction.setChainZoneType(ZoneRuleUtils.getChainZoneType(tx_action.getSender_action().getTx_sender_account_addr()));
 
-        //查询from to账号shard
-        AccountResult fromAccount = topGrpcClient.getAccount(from);
-        AccountResult toAccount = topGrpcClient.getAccount(to);
-        topTransaction.setShardFrom(fromAccount.getValue().getGroup_id());
-        topTransaction.setShardTo(toAccount.getValue().getGroup_id());
+
+        /***************************更新tx_action***************************************/
+        Sender_action senderAction = tx_action.getSender_action();
+        Receiver_action receiverAction = tx_action.getReceiver_action();
+
+        Action_param senderParam = senderAction.getAction_param();
+        Action_param receiverParam = receiverAction.getAction_param();
 
 
-        //更新交易的unitblock信息
+        /***************************更新sender_action***************************************/
+        topTransaction.setSenderActionAutorization(senderAction.getAction_authorization());
+        topTransaction.setSenderActionExt(senderAction.getAction_ext());
+        topTransaction.setSenderActionHash(senderAction.getAction_hash());
+        topTransaction.setSenderActionSize(senderAction.getAction_size());
+        topTransaction.setSenderActionType(senderAction.getAction_type());
+        topTransaction.setSenderActionAccountAddr(senderAction.getTx_sender_account_addr());
+        if (!ObjectUtils.isEmpty(senderParam)) {
+            topTransaction.setSenderActionParamFuncName(senderParam.getFunc_name());
+            topTransaction.setSenderActionParamParas(senderParam.getParas());
+            topTransaction.setSenderActionParamAddress(senderParam.getAddress());
+            topTransaction.setSenderActionParamTokenName(senderParam.getToken_name());
+            topTransaction.setSenderActionParamAmount(senderParam.getAmount());
+            topTransaction.setAmount(senderParam.getAmount());
+            topTransaction.setSenderActionParamTgasLimit(senderParam.getTgas_limit());
+            topTransaction.setSenderActionParamCode(senderParam.getCode());
+            topTransaction.setSenderActionParamVoteNum(senderParam.getVote_num());
+            topTransaction.setSenderActionParamLockDuration(senderParam.getLock_duration());
+            topTransaction.setSenderActionParamAccountKey(senderParam.getAccount_key());
+            topTransaction.setSenderActionParamKeyValue(senderParam.getKey_value());
+            topTransaction.setSenderActionParamVersion(senderParam.getVersion());
+            topTransaction.setSenderActionParamUnlockType(senderParam.getUnlock_type());
+            topTransaction.setSenderActionParamUnlockValues(senderParam.getUnlock_values());
+            topTransaction.setSenderActionParamParams(senderParam.getParams());
+            topTransaction.setSenderActionParamLockTranHash(senderParam.getLock_tran_hash());
+            topTransaction.setSenderActionParamSignatures(senderParam.getSignatures());
+            topTransaction.setSenderActionParamName(senderParam.getName());
+        }
+
+        /***************************更新sender_action***************************************/
+        topTransaction.setReceiverActionAutorization(receiverAction.getAction_authorization());
+        topTransaction.setReceiverActionExt(receiverAction.getAction_ext());
+        topTransaction.setReceiverActionHash(receiverAction.getAction_hash());
+        topTransaction.setReceiverActionSize(receiverAction.getAction_size());
+        topTransaction.setReceiverActionType(receiverAction.getAction_type());
+        topTransaction.setReceiverActionAccountAddr(receiverAction.getTx_receiver_account_addr());
+        if (!ObjectUtils.isEmpty(receiverParam)) {
+            topTransaction.setReceiverActionParamFuncName(receiverParam.getFunc_name());
+            topTransaction.setReceiverActionParamParas(receiverParam.getParas());
+            topTransaction.setReceiverActionParamAddress(receiverParam.getAddress());
+            topTransaction.setReceiverActionParamTokenName(receiverParam.getToken_name());
+            topTransaction.setReceiverActionParamAmount(receiverParam.getAmount());
+            topTransaction.setReceiverActionParamTgasLimit(receiverParam.getTgas_limit());
+            topTransaction.setReceiverActionParamCode(receiverParam.getCode());
+            topTransaction.setReceiverActionParamVoteNum(receiverParam.getVote_num());
+            topTransaction.setReceiverActionParamLockDuration(receiverParam.getLock_duration());
+            topTransaction.setReceiverActionParamAccountKey(receiverParam.getAccount_key());
+            topTransaction.setReceiverActionParamKeyValue(receiverParam.getKey_value());
+            topTransaction.setReceiverActionParamVersion(receiverParam.getVersion());
+            topTransaction.setReceiverActionParamUnlockType(receiverParam.getUnlock_type());
+            topTransaction.setReceiverActionParamUnlockValues(receiverParam.getUnlock_values());
+            topTransaction.setReceiverActionParamParams(receiverParam.getParams());
+            topTransaction.setReceiverActionParamLockTranHash(receiverParam.getLock_tran_hash());
+            topTransaction.setReceiverActionParamSignatures(receiverParam.getSignatures());
+            topTransaction.setReceiverActionParamName(receiverParam.getName());
+        }
+
+
+
+        /***************************更新 unitblock信息***************************************/
+        Tx_consensus_state state = transactionResult.getValue().getTx_consensus_state();
+
         UnitInfo sendUnitInfo = state.getSend_unit_info();
         UnitInfo recvUnitInfo = state.getRecv_unit_info();
         Confirm_unit_info confirmUnitInfo = state.getConfirm_unit_info();
         //更新交易发起unitblock信息
         if (!ObjectUtils.isEmpty(sendUnitInfo)) {
-            topTransaction.setSendUsedDeposit(sendUnitInfo.getUsed_deposit());
-            topTransaction.setSendUsedDisk(sendUnitInfo.getUsed_disk());
-            topTransaction.setSendUsedGas(sendUnitInfo.getUsed_gas());
-            topTransaction.setTxFee(sendUnitInfo.getTx_fee());
-            topTransaction.setSendUnitBlockHash(sendUnitInfo.getUnit_hash());;
+            topTransaction.setSendUnitUsedDeposit(sendUnitInfo.getUsed_deposit());
+            topTransaction.setSendUnitUsedDisk(sendUnitInfo.getUsed_disk());
+            topTransaction.setSendUnitUsedGas(sendUnitInfo.getUsed_gas());
+            topTransaction.setSendUnitTxFee(sendUnitInfo.getTx_fee());
+            topTransaction.setSendUnitHeight(sendUnitInfo.getHeight());
+            topTransaction.setSendUnitHash(sendUnitInfo.getUnit_hash());;
         }
         //更新交易接收unitblock信息
         if (!ObjectUtils.isEmpty(recvUnitInfo)) {
-            topTransaction.setRecvUsedDeposit(recvUnitInfo.getUsed_deposit());
-            topTransaction.setRecvUsedDisk(recvUnitInfo.getUsed_disk());
-            topTransaction.setRecvUsedGas(recvUnitInfo.getUsed_gas());
-            topTransaction.setRecUnitBlockHash(recvUnitInfo.getUnit_hash());;
+            topTransaction.setRecvUnitUsedDeposit(recvUnitInfo.getUsed_deposit());
+            topTransaction.setRecvUnitUsedDisk(recvUnitInfo.getUsed_disk());
+            topTransaction.setRecvUnitUsedGas(recvUnitInfo.getUsed_gas());
+            topTransaction.setRecvUnitHeight(recvUnitInfo.getHeight());
+            topTransaction.setRecvUnitHash(recvUnitInfo.getUnit_hash());;
         }
         //更新确认unitblock信息
         if(!ObjectUtils.isEmpty(confirmUnitInfo)) {
-            topTransaction.setStatus(confirmUnitInfo.getExec_status());
-            topTransaction.setUsedDeposit(confirmUnitInfo.getUsed_deposit());
-            topTransaction.setGasUsed(confirmUnitInfo.getUsed_gas());
-            topTransaction.setDiskUsed(confirmUnitInfo.getUsed_disk());
-            topTransaction.setConfirmUnitBlockHash(confirmUnitInfo.getUnit_hash());
+            topTransaction.setConfirmUnitExecStatus(confirmUnitInfo.getExec_status());
+            topTransaction.setConfirmUnitTxExecStatus(confirmUnitInfo.getTx_exec_status());
+            topTransaction.setConfirmUnitUsedDeposit(confirmUnitInfo.getUsed_deposit());
+            topTransaction.setConfirmUnitUsedGas(confirmUnitInfo.getUsed_gas());
+            topTransaction.setConfirmUnitUsedDisk(confirmUnitInfo.getUsed_disk());
+            topTransaction.setConfirmUnitHash(confirmUnitInfo.getUnit_hash());
+            topTransaction.setConfirmUnitHeight(confirmUnitInfo.getHeight());
         }
 
-        boolean txConfirmed = ObjectUtils.nullSafeEquals("success", topTransaction.getStatus());
+
+        boolean txConfirmed = ObjectUtils.nullSafeEquals("success", topTransaction.getTxState());
         boolean saveTxSuccess = topTransactionService.saveOrUpdate(topTransaction);
 
         if(saveTxSuccess && txConfirmed){

@@ -1,5 +1,6 @@
 package org.topnetwork.common.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.topnetwork.common.entity.TopUnitBlock;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -13,4 +14,12 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface TopUnitBlockService extends IService<TopUnitBlock> {
 
+    Page<TopUnitBlock> getUnitBlocks(long pageNum, long pageSize);
+
+    Page<TopUnitBlock> getUnitBlocks(String address, long pageNum, long pageSize);
+
+
+    TopUnitBlock getUnitBlock(String address, long height);
+
+    TopUnitBlock getUnitBlock(String hash);
 }

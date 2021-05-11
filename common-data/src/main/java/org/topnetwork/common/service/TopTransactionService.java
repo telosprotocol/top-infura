@@ -1,5 +1,6 @@
 package org.topnetwork.common.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.topnetwork.common.entity.TopTransaction;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -13,4 +14,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface TopTransactionService extends IService<TopTransaction> {
     TopTransaction getTxByHash(String txHash);
+
+    Page<TopTransaction> getTransactions(long pageNum, long pageSize);
+
+    Page<TopTransaction> getTransactions(String address, long pageNum, long pageSize);
+
 }

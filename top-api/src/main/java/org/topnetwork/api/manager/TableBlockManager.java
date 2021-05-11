@@ -3,6 +3,7 @@ package org.topnetwork.api.manager;
 import org.topnetwork.common.entity.TopTableBlock;
 
 import java.math.BigInteger;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -11,7 +12,9 @@ import java.util.Map;
  **/
 public interface TableBlockManager {
 
-    Map<String, BigInteger> getLatestTableBlockHeight();
+    List<Long> getLatestTableBlockHeight();
 
     TopTableBlock getTableBlock(String address, Long height);
+
+
 }

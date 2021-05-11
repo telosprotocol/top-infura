@@ -3,6 +3,8 @@ package org.topnetwork.common.service;
 import org.topnetwork.common.entity.TopTableBlock;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * <p>
  * table块表 服务类
@@ -13,4 +15,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface TopTableBlockService extends IService<TopTableBlock> {
 
+    void updateLatestHeight(String address, Long height);
+
+    Long getLatestHeight(String address);
+
+    List<Long> getAllLatestHeight();
 }

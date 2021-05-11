@@ -1,10 +1,8 @@
 package org.topnetwork.api.manager;
 
 import org.topnetwork.api.bean.PageData;
-import org.topnetwork.common.dao.TopTransactionDao;
+import org.topnetwork.api.bean.resp.TransactionResp;
 import org.topnetwork.common.entity.TopTransaction;
-
-import java.util.List;
 
 /**
  * @author CasonCai
@@ -12,8 +10,10 @@ import java.util.List;
  **/
 public interface TransactionManager {
 
-    PageData<TopTransaction> getTransactions(int pageNum, int pageSize);
+    PageData<TransactionResp> getTransactions(long pageNum, long pageSize);
 
-    PageData<TopTransaction> getTransactions(String address, int pageNum, int pageSize);
+    PageData<TransactionResp> getTransactions(String address, long pageNum, long pageSize);
+
+    TransactionResp getTransaction(String txHash);
 
 }

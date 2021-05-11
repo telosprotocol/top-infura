@@ -16,7 +16,7 @@ import lombok.EqualsAndHashCode;
  * </p>
  *
  * @author CasonCai
- * @since 2021-04-21
+ * @since 2021-05-10
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -52,8 +52,8 @@ public class TopTableBlock extends Model<TopTableBlock> {
     /**
      * 上一个table块hash
      */
-    @TableField("pre_hash")
-    private String preHash;
+    @TableField("prev_hash")
+    private String prevHash;
 
     /**
      * 单元块tableId
@@ -91,8 +91,8 @@ public class TopTableBlock extends Model<TopTableBlock> {
     /**
      * 本块的validator leader矿工账户地址
      */
-    @TableField("validator_address")
-    private String validatorAddress;
+    @TableField("validator")
+    private String validator;
 
     /**
      * 本块的validator leader节点(xip)
